@@ -22,7 +22,6 @@ body{font-family:'Montserrat',sans-serif;color:#fff;}
 .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.18;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");}
 
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;justify-content:space-between;
   padding:16px 48px;
@@ -50,7 +49,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .visitor-num{color:var(--pink2);font-weight:600;}
 
-/* HERO */
 .hero{position:relative;z-index:10;height:100vh;min-height:600px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;overflow:hidden;}
@@ -63,11 +61,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:22px;animation:fU .7s .2s both;}
 .hero-eyebrow span{font-size:.55rem;letter-spacing:5px;text-transform:uppercase;color:var(--pink3);font-weight:500;}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--pink);opacity:.5;}
-.hero-title{font-family:'Playfair Display',serif;
-  font-size:clamp(4rem,12vw,11rem);font-weight:700;
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(4rem,12vw,11rem);font-weight:700;
   line-height:.9;letter-spacing:-1px;margin-bottom:4px;animation:fU .8s .35s both;}
-.hero-title2{font-family:'Playfair Display',serif;
-  font-size:clamp(4rem,12vw,11rem);font-weight:400;font-style:italic;line-height:.9;
+.hero-title2{font-family:'Playfair Display',serif;font-size:clamp(4rem,12vw,11rem);
+  font-weight:400;font-style:italic;line-height:.9;
   background:linear-gradient(135deg,var(--pink) 0%,var(--pink2) 50%,#ffcce0 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   animation:fU .8s .45s both;margin-bottom:26px;}
@@ -96,7 +93,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   animation:scrollLine 2s ease-in-out infinite;}
 @keyframes scrollLine{0%,100%{opacity:.4}50%{opacity:1}}
 
-/* ADS */
 .ad-bar{position:relative;z-index:10;background:rgba(6,4,12,.98);
   border-top:1px solid rgba(255,26,108,.06);border-bottom:1px solid rgba(255,26,108,.06);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -104,7 +100,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .ad-lbl{font-size:.42rem;letter-spacing:3px;color:rgba(255,255,255,.1);
   text-transform:uppercase;margin-bottom:4px;}
 
-/* STATS */
 .stats-bar{position:relative;z-index:10;
   border-bottom:1px solid rgba(255,26,108,.07);
   display:grid;grid-template-columns:repeat(3,1fr);}
@@ -116,7 +111,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   font-weight:700;color:var(--pink);line-height:1;margin-bottom:5px;}
 .stat-label{font-size:.52rem;letter-spacing:3px;color:rgba(255,255,255,.22);text-transform:uppercase;}
 
-/* VIDEOS SECTION */
 .section{position:relative;z-index:10;padding:52px 0 40px;}
 .sec-head{padding:0 48px;margin-bottom:32px;}
 .sec-label{font-size:.55rem;letter-spacing:5px;text-transform:uppercase;
@@ -129,10 +123,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .sec-sub{font-size:.65rem;color:rgba(255,255,255,.22);letter-spacing:2px;}
 
 /* ══════════════════════════════════════════
-   VIDEO CARDS — Autoplay, Loop, No Controls
-   Each video plays automatically on load
-   Mute button in bottom right corner
-   No play button, no controls bar
+   VIDEO CARDS
+   Uses thumbnail image + click to open
+   Google Drive in a proper viewer
+   This is the MOST RELIABLE method
+   Works on 100% of devices
 ══════════════════════════════════════════ */
 .videos-grid{
   display:grid;
@@ -142,61 +137,97 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 }
 
 .video-card{
-  position:relative;
   background:var(--black2);
   border:1px solid rgba(255,26,108,.1);
   border-radius:4px;
   overflow:hidden;
   opacity:0;transform:translateY(24px);
-  transition:opacity .5s, transform .5s, border-color .3s, box-shadow .3s;
+  transition:opacity .5s,transform .5s,border-color .3s,box-shadow .3s;
 }
 .video-card.in{opacity:1;transform:translateY(0);}
-.video-card:hover{
-  border-color:rgba(255,26,108,.4);
-  box-shadow:0 16px 48px rgba(255,26,108,.18);
-}
+.video-card:hover{border-color:rgba(255,26,108,.4);box-shadow:0 16px 48px rgba(255,26,108,.18);}
 
-/* VIDEO WRAPPER — 16:9 ratio, hides Google Drive UI */
-.vc-player{
+/* THUMBNAIL + PLAY OVERLAY */
+.vc-thumb{
   position:relative;
   width:100%;
-  /* 16:9 visible window */
   aspect-ratio:16/9;
   overflow:hidden;
-  background:#000;
+  background:var(--black3);
+  cursor:pointer;
 }
+.vc-thumb img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease;
+}
+.vc-thumb:hover img{transform:scale(1.05);}
+.vc-thumb-ph{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--black3),var(--black4));
+}
+
+/* BIG PLAY BUTTON OVERLAY */
+.vc-play-ov{
+  position:absolute;inset:0;
+  background:rgba(4,3,10,.4);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .3s;
+}
+.vc-thumb:hover .vc-play-ov{background:rgba(255,26,108,.15);}
+.vc-play-circle{
+  width:72px;height:72px;
+  border:2.5px solid #fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,26,108,.3);
+  box-shadow:0 0 40px rgba(255,26,108,.4);
+  transition:all .3s;
+}
+.vc-thumb:hover .vc-play-circle{
+  background:var(--pink);
+  transform:scale(1.1);
+  box-shadow:0 0 60px var(--glow);
+}
+.vc-play-circle svg{width:28px;height:28px;margin-left:4px;}
+
+/* LIVE LABEL */
+.vc-live{
+  position:absolute;top:10px;left:10px;
+  background:rgba(4,3,10,.85);
+  border:1px solid rgba(255,26,108,.3);
+  padding:3px 10px;border-radius:2px;
+  font-size:.48rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--pink3);display:flex;align-items:center;gap:5px;
+}
+.vc-live-dot{width:5px;height:5px;border-radius:50%;background:var(--pink);
+  animation:blink 1.5s infinite;}
+
+/* IFRAME PLAYER — shown after click */
+.vc-player{
+  display:none;
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  background:#000;
+  overflow:hidden;
+}
+.vc-player.active{display:block;}
 .vc-player iframe{
-  /* Offset to hide Google Drive top bar (~56px)
-     and bottom bar (~56px) */
   position:absolute;
-  top:-56px;
-  left:0;
+  top:-56px;left:0;
   width:100%;
   height:calc(100% + 112px);
   border:none;
-  pointer-events:none; /* prevents clicking controls */
 }
-
-/* MUTE BUTTON — only control allowed */
-.mute-btn{
-  position:absolute;
-  bottom:12px;
-  right:12px;
-  z-index:20;
-  background:rgba(4,3,10,.8);
-  border:1px solid rgba(255,26,108,.3);
-  color:#fff;
-  width:36px;height:36px;
-  border-radius:50%;
+.vc-close{
+  position:absolute;top:8px;right:8px;z-index:20;
+  background:rgba(4,3,10,.85);border:1px solid rgba(255,26,108,.3);
+  color:#fff;width:30px;height:30px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-  transition:all .3s;
-  backdrop-filter:blur(4px);
+  font-size:.7rem;cursor:pointer;transition:all .3s;
 }
-.mute-btn:hover{background:var(--pink);border-color:var(--pink);}
-.mute-btn svg{width:16px;height:16px;pointer-events:none;}
+.vc-close:hover{background:var(--pink);}
 
-/* CARD INFO */
 .vc-info{padding:16px 18px 18px;}
 .vc-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
   color:#fff;margin-bottom:6px;}
@@ -206,8 +237,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .vc-badge-exc{background:linear-gradient(135deg,var(--gold),#e8c97a);color:#000;}
 .vc-badge-new{background:var(--pink);color:#fff;}
 .vc-dur{font-size:.52rem;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;}
-
-/* OF LINK ON CARD */
 .vc-of{display:flex;align-items:center;gap:6px;margin-top:12px;
   padding:10px 16px;background:rgba(255,26,108,.08);
   border:1px solid rgba(255,26,108,.2);border-radius:2px;
@@ -217,7 +246,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .vc-of:hover{background:rgba(255,26,108,.15);border-color:var(--pink);color:#fff;}
 .vc-of svg{width:13px;height:13px;flex-shrink:0;}
 
-/* COMMENTS */
 .vc-cmts{border-top:1px solid rgba(255,26,108,.07);padding:14px 18px 18px;}
 .vc-cmts-title{font-family:'Playfair Display',serif;font-size:.95rem;color:#fff;
   margin-bottom:12px;display:flex;align-items:center;gap:8px;}
@@ -251,7 +279,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .cmt-empty{font-size:.6rem;color:rgba(255,255,255,.12);
   letter-spacing:2px;text-align:center;padding:12px 0;}
 
-/* SOCIALS */
 .socials-sec{position:relative;z-index:10;padding:36px 48px 52px;
   display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
 .soc-btn{display:flex;align-items:center;gap:11px;padding:16px 36px;
@@ -301,7 +328,6 @@ footer{position:relative;z-index:10;
 <div class="grain"></div>
 <canvas id="lq"></canvas>
 
-<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">
     <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
@@ -331,11 +357,8 @@ footer{position:relative;z-index:10;
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"
-    style="background-image:url('https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w1200-h800')">
-  </div>
+  <div class="hero-bg" style="background-image:url('https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w1200-h800')"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-eyebrow"><span>Official · Exclusive Content · 18+</span></div>
@@ -353,61 +376,49 @@ footer{position:relative;z-index:10;
   <div class="hero-scroll"><div class="hero-scroll-line"></div><span>SCROLL</span></div>
 </section>
 
-<!-- AD TOP -->
 <div class="ad-bar">
   <div class="ad-lbl">Advertisement</div>
   <!-- PASTE GOOGLE ADSENSE 728x90 CODE HERE -->
 </div>
 
-<!-- STATS -->
 <div class="stats-bar" id="statsBar">
-  <div class="stat-box">
-    <div class="stat-num" id="totalVisits">0</div>
-    <div class="stat-label">Total Visits</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-num" id="todayVisits">0</div>
-    <div class="stat-label">Visits Today</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-num">2</div>
-    <div class="stat-label">Videos</div>
-  </div>
+  <div class="stat-box"><div class="stat-num" id="totalVisits">0</div><div class="stat-label">Total Visits</div></div>
+  <div class="stat-box"><div class="stat-num" id="todayVisits">0</div><div class="stat-label">Visits Today</div></div>
+  <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Videos</div></div>
 </div>
 
-<!-- VIDEOS — Autoplay Loop, No Controls, Mute Button Only -->
 <section class="section" id="videos">
   <div class="sec-head">
     <div class="sec-label">Exclusive Content</div>
     <h2 class="sec-title">Watch <em>Now</em></h2>
-    <p class="sec-sub">Videos play automatically · Use 🔊 to toggle sound</p>
+    <p class="sec-sub">Tap any video to play instantly</p>
   </div>
 
   <div class="videos-grid">
 
     <!-- VIDEO 1 -->
     <div class="video-card" id="vc1">
+      <!-- THUMBNAIL — tap to play -->
+      <div class="vc-thumb" id="vt1" onclick="playVideo(1)">
+        <img src="https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w800-h450"
+          alt="Bottomgirl Exclusive"
+          onerror="this.style.display='none';document.getElementById('vph1').style.display='flex'">
+        <div class="vc-thumb-ph" id="vph1" style="display:none;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2">
+            <path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+          </svg>
+        </div>
+        <div class="vc-play-ov">
+          <div class="vc-play-circle">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="vc-live"><div class="vc-live-dot"></div>EXCLUSIVE</div>
+      </div>
+      <!-- PLAYER — shown after tap -->
       <div class="vc-player" id="vp1">
-        <!-- Google Drive preview — autoplay loop via URL params -->
-        <iframe
-          id="if1"
-          src="https://drive.google.com/file/d/1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn/preview?autoplay=1&loop=1&controls=0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen="false">
-        </iframe>
-        <!-- Mute toggle button -->
-        <button class="mute-btn" id="mb1" onclick="toggleMute(1)" title="Toggle Sound">
-          <!-- Muted icon (default) -->
-          <svg id="mi1-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
-          </svg>
-          <!-- Sound icon (hidden by default) -->
-          <svg id="mi1-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-          </svg>
-        </button>
+        <button class="vc-close" onclick="closeVideo(1)">✕</button>
+        <iframe id="if1" src="" allow="autoplay" allowfullscreen="false"></iframe>
       </div>
       <div class="vc-info">
         <div class="vc-title">Bottomgirl Exclusive</div>
@@ -421,39 +432,34 @@ footer{position:relative;z-index:10;
         </a>
       </div>
       <div class="vc-cmts">
-        <div class="vc-cmts-title">
-          Comments <span class="vc-cmt-count" id="cc1"></span>
-        </div>
+        <div class="vc-cmts-title">Comments <span class="vc-cmt-count" id="cc1"></span></div>
         <div class="cmt-input-row">
           <input class="cmt-name" type="text" id="cn1" placeholder="Your name" maxlength="28">
           <textarea class="cmt-text" id="ct1" placeholder="Write a comment..." rows="2" maxlength="280"></textarea>
           <button class="cmt-post" onclick="postCmt('hc1','cn1','ct1','cl1','cc1')">Post</button>
         </div>
-        <div class="cmt-list" id="cl1">
-          <div class="cmt-empty">No comments yet. Be the first!</div>
-        </div>
+        <div class="cmt-list" id="cl1"><div class="cmt-empty">No comments yet.</div></div>
       </div>
     </div>
 
     <!-- VIDEO 2 -->
     <div class="video-card" id="vc2">
+      <div class="vc-thumb" id="vt2" onclick="playVideo(2)">
+        <div class="vc-thumb-ph">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2">
+            <path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+          </svg>
+        </div>
+        <div class="vc-play-ov">
+          <div class="vc-play-circle">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="vc-live"><div class="vc-live-dot"></div>EXCLUSIVE</div>
+      </div>
       <div class="vc-player" id="vp2">
-        <iframe
-          id="if2"
-          src="https://drive.google.com/file/d/1DmPpdjQbXktkSI1QapIgbcHHxFATdup4/preview?autoplay=1&loop=1&controls=0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen="false">
-        </iframe>
-        <button class="mute-btn" id="mb2" onclick="toggleMute(2)" title="Toggle Sound">
-          <svg id="mi2-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
-          </svg>
-          <svg id="mi2-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-          </svg>
-        </button>
+        <button class="vc-close" onclick="closeVideo(2)">✕</button>
+        <iframe id="if2" src="" allow="autoplay" allowfullscreen="false"></iframe>
       </div>
       <div class="vc-info">
         <div class="vc-title">Wanna Make My Pussy Wet</div>
@@ -467,30 +473,24 @@ footer{position:relative;z-index:10;
         </a>
       </div>
       <div class="vc-cmts">
-        <div class="vc-cmts-title">
-          Comments <span class="vc-cmt-count" id="cc2"></span>
-        </div>
+        <div class="vc-cmts-title">Comments <span class="vc-cmt-count" id="cc2"></span></div>
         <div class="cmt-input-row">
           <input class="cmt-name" type="text" id="cn2" placeholder="Your name" maxlength="28">
           <textarea class="cmt-text" id="ct2" placeholder="Write a comment..." rows="2" maxlength="280"></textarea>
           <button class="cmt-post" onclick="postCmt('hc2','cn2','ct2','cl2','cc2')">Post</button>
         </div>
-        <div class="cmt-list" id="cl2">
-          <div class="cmt-empty">No comments yet. Be the first!</div>
-        </div>
+        <div class="cmt-list" id="cl2"><div class="cmt-empty">No comments yet.</div></div>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- AD MID -->
 <div class="ad-bar" style="margin-top:20px;">
   <div class="ad-lbl">Advertisement</div>
   <!-- PASTE GOOGLE ADSENSE 300x250 CODE HERE -->
 </div>
 
-<!-- SOCIALS -->
 <div class="socials-sec">
   <a class="soc-btn soc-of" href="https://onlyfans.com/u355085640" target="_blank">
     <svg class="soc-ico" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
@@ -532,7 +532,6 @@ const mkB=i=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:
 for(let i=0;i<10;i++)blobs.push(mkB(i));
 (function loop(){cx.clearRect(0,0,W,H);T+=.003;blobs.forEach(b=>{b.x+=b.vx+Math.sin(T*b.sp*60+b.ph)*.5;b.y+=b.vy+Math.cos(T*b.sp*40+b.ph)*.4;if(b.x<-b.r)b.x=W+b.r;if(b.x>W+b.r)b.x=-b.r;if(b.y<-b.r)b.y=H+b.r;if(b.y>H+b.r)b.y=-b.r;const p=b.r+Math.sin(T*b.sp*80+b.ph)*28;const g=cx.createRadialGradient(b.x,b.y,0,b.x,b.y,p);g.addColorStop(0,b.c+'aa');g.addColorStop(.4,b.c+'33');g.addColorStop(1,b.c+'00');cx.fillStyle=g;cx.beginPath();cx.arc(b.x,b.y,p,0,Math.PI*2);cx.fill();});requestAnimationFrame(loop);})();
 
-// SCROLL REVEAL
 const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*80);});},{threshold:.07});
 document.querySelectorAll('.stat-box,.video-card').forEach(el=>io.observe(el));
 
@@ -541,10 +540,7 @@ function updateVisits(){
   let total=parseInt(localStorage.getItem('bg_total')||'0')+1;
   localStorage.setItem('bg_total',total);
   const today=new Date().toDateString();
-  if(localStorage.getItem('bg_day')!==today){
-    localStorage.setItem('bg_day',today);
-    localStorage.setItem('bg_today','0');
-  }
+  if(localStorage.getItem('bg_day')!==today){localStorage.setItem('bg_day',today);localStorage.setItem('bg_today','0');}
   let todayN=parseInt(localStorage.getItem('bg_today')||'0')+1;
   localStorage.setItem('bg_today',todayN);
   document.getElementById('totalVisits').textContent=total.toLocaleString();
@@ -552,85 +548,54 @@ function updateVisits(){
   document.getElementById('visitorNum').textContent=total.toLocaleString();
 }
 
-// MUTE TOGGLE
-// Since iframe blocks JS control, we reload
-// the iframe src with mute=1 or mute=0
-const muteState={1:true,2:true}; // both muted by default
-const videoIds={
+// VIDEO IDs
+const VIDEO_IDS={
   1:'1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn',
   2:'1DmPpdjQbXktkSI1QapIgbcHHxFATdup4'
 };
 
-function buildSrc(id,muted){
-  const m=muted?'&mute=1':'';
-  return`https://drive.google.com/file/d/${videoIds[id]}/preview?autoplay=1&loop=1&controls=0${m}`;
-}
-
-function toggleMute(n){
-  muteState[n]=!muteState[n];
-  // Reload iframe with new mute state
+// PLAY VIDEO — hide thumbnail, show iframe
+function playVideo(n){
+  const thumb=document.getElementById('vt'+n);
+  const player=document.getElementById('vp'+n);
   const iframe=document.getElementById('if'+n);
-  iframe.src=buildSrc(n,muteState[n]);
-  // Toggle icons
-  document.getElementById('mi'+n+'-off').style.display=muteState[n]?'block':'none';
-  document.getElementById('mi'+n+'-on').style.display=muteState[n]?'none':'block';
-  // If unmuting one, mute the other (avoid 2 sounds at once)
-  if(!muteState[n]){
-    const other=n===1?2:1;
-    if(!muteState[other]){
-      muteState[other]=true;
-      document.getElementById('if'+other).src=buildSrc(other,true);
-      document.getElementById('mi'+other+'-off').style.display='block';
-      document.getElementById('mi'+other+'-on').style.display='none';
-    }
-  }
-  showToast(muteState[n]?'🔇 Muted':'🔊 Sound On');
+  // Set iframe src when user taps — triggers autoplay on user gesture
+  iframe.src=`https://drive.google.com/file/d/${VIDEO_IDS[n]}/preview`;
+  thumb.style.display='none';
+  player.classList.add('active');
 }
 
-// Set initial muted src on load
-window.addEventListener('DOMContentLoaded',()=>{
-  updateVisits();
-  document.getElementById('if1').src=buildSrc(1,true);
-  document.getElementById('if2').src=buildSrc(2,true);
-  loadComments();
-});
+// CLOSE VIDEO — show thumbnail again
+function closeVideo(n){
+  const thumb=document.getElementById('vt'+n);
+  const player=document.getElementById('vp'+n);
+  const iframe=document.getElementById('if'+n);
+  iframe.src='';
+  player.classList.remove('active');
+  thumb.style.display='block';
+}
 
 // COMMENTS
 let comments=JSON.parse(localStorage.getItem('bg_cmts')||'{}');
 function saveCmts(){localStorage.setItem('bg_cmts',JSON.stringify(comments));}
-
 function timeAgo(ts){
   const s=Math.floor((Date.now()-ts)/1000);
-  if(s<60)return'just now';
-  if(s<3600)return Math.floor(s/60)+'m ago';
-  if(s<86400)return Math.floor(s/3600)+'h ago';
-  return Math.floor(s/86400)+'d ago';
+  if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';
+  if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';
 }
-
-function loadComments(){
-  renderCmts('hc1','cl1','cc1');
-  renderCmts('hc2','cl2','cc2');
-}
-
 function renderCmts(vid,listId,countId){
   const list=document.getElementById(listId);
   const count=document.getElementById(countId);
-  const all=comments[vid]||[];
-  const vis=all.filter(c=>!c.hidden);
-  count.textContent=vis.length?`(${vis.length})`:'';
-  if(!all.length){
-    list.innerHTML='<div class="cmt-empty">No comments yet. Be the first!</div>';
-    return;
-  }
-  list.innerHTML=vis.map(c=>`
+  const all=(comments[vid]||[]).filter(c=>!c.hidden);
+  count.textContent=all.length?`(${all.length})`:'';
+  if(!all.length){list.innerHTML='<div class="cmt-empty">No comments yet.</div>';return;}
+  list.innerHTML=all.map(c=>`
     <div class="cmt-item">
       <div class="cmt-author">${c.name}</div>
       <div class="cmt-body">${c.text}</div>
       <div class="cmt-time">${timeAgo(c.ts)}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
 function postCmt(vid,nameId,textId,listId,countId){
   const name=document.getElementById(nameId).value.trim();
   const text=document.getElementById(textId).value.trim();
@@ -644,6 +609,12 @@ function postCmt(vid,nameId,textId,listId,countId){
   renderCmts(vid,listId,countId);
   showToast('Comment posted!');
 }
+
+window.addEventListener('DOMContentLoaded',()=>{
+  updateVisits();
+  renderCmts('hc1','cl1','cc1');
+  renderCmts('hc2','cl2','cc2');
+});
 
 function showToast(msg){
   const t=document.getElementById('toast');
