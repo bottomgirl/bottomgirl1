@@ -19,7 +19,7 @@
 html,body{width:100%;min-height:100vh;overflow-x:hidden;background:var(--black);}
 body{font-family:'Montserrat',sans-serif;color:#fff;}
 #lq{position:fixed;inset:0;z-index:0;width:100%;height:100%;}
-.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.22;
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.18;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");}
 
 /* NAV */
@@ -27,7 +27,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;justify-content:space-between;
   padding:16px 48px;
   background:linear-gradient(to bottom,rgba(4,3,10,.98),transparent);
-  backdrop-filter:blur(8px);animation:fD .7s both;}
+  backdrop-filter:blur(10px);animation:fD .7s both;
+  border-bottom:1px solid rgba(255,26,108,.06);}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;
   letter-spacing:3px;text-transform:uppercase;color:#fff;
@@ -55,9 +56,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   text-align:center;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;z-index:0;
   background-size:cover;background-position:center;
-  filter:blur(28px) brightness(.2) saturate(1.5);transform:scale(1.12);}
+  filter:blur(28px) brightness(.18) saturate(1.5);transform:scale(1.12);}
 .hero-overlay{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(to bottom,rgba(4,3,10,.65) 0%,rgba(4,3,10,.15) 40%,rgba(4,3,10,.96) 100%);}
+  background:linear-gradient(to bottom,rgba(4,3,10,.6) 0%,rgba(4,3,10,.1) 45%,rgba(4,3,10,.97) 100%);}
 .hero-content{position:relative;z-index:2;padding:0 24px;}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:22px;animation:fU .7s .2s both;}
 .hero-eyebrow span{font-size:.55rem;letter-spacing:5px;text-transform:uppercase;color:var(--pink3);font-weight:500;}
@@ -107,17 +108,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .stats-bar{position:relative;z-index:10;
   border-bottom:1px solid rgba(255,26,108,.07);
   display:grid;grid-template-columns:repeat(3,1fr);}
-.stat-box{padding:24px;text-align:center;border-right:1px solid rgba(255,26,108,.07);
+.stat-box{padding:22px;text-align:center;border-right:1px solid rgba(255,26,108,.07);
   opacity:0;transform:translateY(14px);transition:all .5s;}
 .stat-box:last-child{border-right:none;}
 .stat-box.in{opacity:1;transform:translateY(0);}
-.stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;
-  font-weight:700;color:var(--pink);line-height:1;margin-bottom:6px;}
-.stat-label{font-size:.55rem;letter-spacing:3px;color:rgba(255,255,255,.25);text-transform:uppercase;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;
+  font-weight:700;color:var(--pink);line-height:1;margin-bottom:5px;}
+.stat-label{font-size:.52rem;letter-spacing:3px;color:rgba(255,255,255,.22);text-transform:uppercase;}
 
-/* SECTION */
-.section{position:relative;z-index:10;padding:52px 0 20px;}
-.sec-head{padding:0 48px;margin-bottom:24px;}
+/* VIDEOS SECTION */
+.section{position:relative;z-index:10;padding:52px 0 40px;}
+.sec-head{padding:0 48px;margin-bottom:32px;}
 .sec-label{font-size:.55rem;letter-spacing:5px;text-transform:uppercase;
   color:var(--pink);margin-bottom:8px;display:flex;align-items:center;gap:12px;}
 .sec-label::after{content:'';flex:1;height:1px;
@@ -127,158 +128,128 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .sec-title em{font-style:italic;color:var(--pink2);}
 .sec-sub{font-size:.65rem;color:rgba(255,255,255,.22);letter-spacing:2px;}
 
-/* SLIDER */
-.slider-wrap{position:relative;padding:0 48px;}
-.slider-wrap::before{content:'';position:absolute;top:0;left:0;bottom:16px;width:48px;
-  background:linear-gradient(to right,var(--black),transparent);z-index:2;pointer-events:none;}
-.slider-wrap::after{content:'';position:absolute;top:0;right:0;bottom:16px;width:80px;
-  background:linear-gradient(to left,var(--black),transparent);z-index:2;pointer-events:none;}
-.slider-track{display:flex;gap:10px;overflow-x:auto;
-  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;padding-bottom:16px;padding-top:6px;}
-.slider-track::-webkit-scrollbar{display:none;}
-.slider-btn{position:absolute;top:50%;transform:translateY(-60%);z-index:5;
-  background:rgba(4,3,10,.9);border:1px solid rgba(255,26,108,.3);
-  color:#fff;width:40px;height:40px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;transition:all .3s;font-size:.9rem;}
-.slider-btn:hover{background:var(--pink);border-color:var(--pink);}
-.slider-btn-l{left:4px;}
-.slider-btn-r{right:4px;}
-
-/* VIDEO CARD */
-.vcard{flex:0 0 260px;scroll-snap-align:start;position:relative;overflow:hidden;
-  background:var(--black3);border:1px solid rgba(255,26,108,.08);border-radius:4px;
-  transition:all .4s cubic-bezier(.16,.8,.4,1);
-  opacity:0;transform:translateY(20px) scale(.97);}
-.vcard.in{opacity:1;transform:translateY(0) scale(1);}
-.vcard:hover{transform:scale(1.04) translateY(-8px);
-  border-color:rgba(255,26,108,.5);box-shadow:0 20px 50px rgba(255,26,108,.25);z-index:10;}
-.vthumb{width:100%;aspect-ratio:16/9;overflow:hidden;position:relative;background:var(--black4);}
-.vthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
-.vcard:hover .vthumb img{transform:scale(1.1);}
-.vph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--black4),var(--black3));}
-.vph svg{width:36px;height:36px;color:rgba(255,26,108,.15);}
-.badge-wrap{position:absolute;top:8px;left:8px;display:flex;gap:4px;}
-.bdg{padding:2px 8px;font-size:.46rem;letter-spacing:2px;font-weight:700;text-transform:uppercase;border-radius:1px;}
-.bdg-exc{background:linear-gradient(135deg,var(--gold),#e8c97a);color:#000;}
-.bdg-new{background:var(--pink);color:#fff;}
-.bdg-hot{background:linear-gradient(135deg,#ff4500,var(--pink));color:#fff;}
-.vov{position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(4,3,10,.98) 0%,rgba(4,3,10,.5) 45%,transparent 100%);
-  opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center;}
-.vcard:hover .vov{opacity:1;}
-.play-circle{width:52px;height:52px;border:2px solid var(--pink);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(255,26,108,.15);transform:scale(.8);transition:all .3s;}
-.vcard:hover .play-circle{transform:scale(1);box-shadow:0 0 24px var(--glow);}
-.watch-strip{position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(135deg,var(--pink),#9b0040);
-  transform:translateY(101%);transition:transform .3s cubic-bezier(.16,.8,.4,1);
-  padding:9px;text-align:center;
-  font-size:.58rem;letter-spacing:3px;font-weight:600;text-transform:uppercase;color:#fff;}
-.vcard:hover .watch-strip{transform:translateY(0);}
-.vbody{padding:12px 14px 14px;}
-.vtitle{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;
-  color:#fff;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.vmeta{display:flex;gap:10px;align-items:center;}
-.vmt{font-size:.52rem;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;}
-
 /* ══════════════════════════════════════════
-   VIDEO MODAL — FIXED ASPECT RATIO
-   The iframe is offset upward to hide
-   Google Drive top bar (share/fullscreen)
-   Bottom is clipped to hide download bar
-   Result: only the video shows, nothing else
+   VIDEO CARDS — Autoplay, Loop, No Controls
+   Each video plays automatically on load
+   Mute button in bottom right corner
+   No play button, no controls bar
 ══════════════════════════════════════════ */
-.modal-bg{position:fixed;inset:0;z-index:600;
-  background:rgba(4,3,10,.97);backdrop-filter:blur(20px);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .4s;padding:16px;}
-.modal-bg.open{opacity:1;pointer-events:all;}
-.modal-box{width:100%;max-width:860px;background:var(--black2);
-  border:1px solid rgba(255,26,108,.15);border-radius:6px;
-  transform:scale(.92) translateY(24px);
-  transition:transform .45s cubic-bezier(.16,.8,.4,1);
-  overflow:hidden;max-height:92vh;overflow-y:auto;}
-.modal-bg.open .modal-box{transform:scale(1) translateY(0);}
+.videos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
+  gap:3px;
+  padding:0 48px;
+}
 
-/* VIDEO PLAYER — proper 16:9 aspect ratio
-   iframe is made taller and offset up to crop
-   out Google Drive UI bars */
-.vid-crop{
+.video-card{
+  position:relative;
+  background:var(--black2);
+  border:1px solid rgba(255,26,108,.1);
+  border-radius:4px;
+  overflow:hidden;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .5s, transform .5s, border-color .3s, box-shadow .3s;
+}
+.video-card.in{opacity:1;transform:translateY(0);}
+.video-card:hover{
+  border-color:rgba(255,26,108,.4);
+  box-shadow:0 16px 48px rgba(255,26,108,.18);
+}
+
+/* VIDEO WRAPPER — 16:9 ratio, hides Google Drive UI */
+.vc-player{
   position:relative;
   width:100%;
-  /* 16:9 aspect ratio for the visible area */
+  /* 16:9 visible window */
   aspect-ratio:16/9;
   overflow:hidden;
   background:#000;
 }
-.vid-crop iframe{
-  /* Make iframe bigger than container */
+.vc-player iframe{
+  /* Offset to hide Google Drive top bar (~56px)
+     and bottom bar (~56px) */
   position:absolute;
-  /* Push up to hide top bar (~56px) */
   top:-56px;
   left:0;
   width:100%;
-  /* Add extra height to account for hidden top+bottom bars */
   height:calc(100% + 112px);
   border:none;
-  display:block;
-  pointer-events:auto;
+  pointer-events:none; /* prevents clicking controls */
 }
 
-.modal-body{padding:18px 22px 6px;}
-.modal-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.modal-vtitle{font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;font-weight:700;}
-.modal-close{background:none;border:1px solid rgba(255,255,255,.1);
-  color:rgba(255,255,255,.4);width:30px;height:30px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:all .3s;}
-.modal-close:hover{border-color:var(--pink);color:var(--pink);}
-.modal-desc{font-size:.65rem;color:rgba(255,255,255,.25);letter-spacing:1px;line-height:1.8;margin-bottom:14px;}
-.modal-links{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-.modal-link{display:inline-flex;align-items:center;gap:6px;
-  padding:9px 18px;border:1px solid rgba(255,26,108,.22);
-  text-decoration:none;color:rgba(255,255,255,.65);
+/* MUTE BUTTON — only control allowed */
+.mute-btn{
+  position:absolute;
+  bottom:12px;
+  right:12px;
+  z-index:20;
+  background:rgba(4,3,10,.8);
+  border:1px solid rgba(255,26,108,.3);
+  color:#fff;
+  width:36px;height:36px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:all .3s;
+  backdrop-filter:blur(4px);
+}
+.mute-btn:hover{background:var(--pink);border-color:var(--pink);}
+.mute-btn svg{width:16px;height:16px;pointer-events:none;}
+
+/* CARD INFO */
+.vc-info{padding:16px 18px 18px;}
+.vc-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
+  color:#fff;margin-bottom:6px;}
+.vc-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.vc-badge{padding:2px 8px;font-size:.46rem;letter-spacing:2px;font-weight:700;
+  text-transform:uppercase;border-radius:1px;}
+.vc-badge-exc{background:linear-gradient(135deg,var(--gold),#e8c97a);color:#000;}
+.vc-badge-new{background:var(--pink);color:#fff;}
+.vc-dur{font-size:.52rem;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;}
+
+/* OF LINK ON CARD */
+.vc-of{display:flex;align-items:center;gap:6px;margin-top:12px;
+  padding:10px 16px;background:rgba(255,26,108,.08);
+  border:1px solid rgba(255,26,108,.2);border-radius:2px;
+  text-decoration:none;color:rgba(255,255,255,.6);
   font-size:.58rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;
-  transition:all .3s;border-radius:2px;}
-.modal-link:hover{border-color:var(--pink);color:#fff;background:rgba(255,26,108,.08);}
-.modal-link svg{width:12px;height:12px;flex-shrink:0;}
+  transition:all .3s;}
+.vc-of:hover{background:rgba(255,26,108,.15);border-color:var(--pink);color:#fff;}
+.vc-of svg{width:13px;height:13px;flex-shrink:0;}
 
 /* COMMENTS */
-.cmt-section{border-top:1px solid rgba(255,26,108,.08);padding:16px 22px 22px;}
-.cmt-title{font-family:'Playfair Display',serif;font-size:1rem;color:#fff;
-  margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.cmt-count{font-size:.56rem;color:rgba(255,26,108,.5);letter-spacing:2px;}
-.cmt-input-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.vc-cmts{border-top:1px solid rgba(255,26,108,.07);padding:14px 18px 18px;}
+.vc-cmts-title{font-family:'Playfair Display',serif;font-size:.95rem;color:#fff;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.vc-cmt-count{font-size:.55rem;color:rgba(255,26,108,.45);letter-spacing:2px;}
+.cmt-input-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .cmt-name{background:rgba(26,14,34,.8);border:1px solid rgba(255,26,108,.14);
-  color:#fff;padding:9px 12px;font-family:'Montserrat',sans-serif;
-  font-size:.7rem;outline:none;width:120px;transition:border-color .3s;border-radius:2px;}
+  color:#fff;padding:8px 11px;font-family:'Montserrat',sans-serif;
+  font-size:.68rem;outline:none;width:110px;transition:border-color .3s;border-radius:2px;}
 .cmt-name:focus{border-color:var(--pink);}
 .cmt-name::placeholder{color:rgba(255,255,255,.16);}
-.cmt-text{flex:1;min-width:160px;background:rgba(26,14,34,.8);
-  border:1px solid rgba(255,26,108,.14);color:#fff;padding:9px 12px;
-  font-family:'Montserrat',sans-serif;font-size:.7rem;outline:none;
+.cmt-text{flex:1;min-width:140px;background:rgba(26,14,34,.8);
+  border:1px solid rgba(255,26,108,.14);color:#fff;padding:8px 11px;
+  font-family:'Montserrat',sans-serif;font-size:.68rem;outline:none;
   resize:none;transition:border-color .3s;border-radius:2px;}
 .cmt-text:focus{border-color:var(--pink);}
 .cmt-text::placeholder{color:rgba(255,255,255,.16);}
 .cmt-post{background:var(--pink);color:#fff;border:none;
-  padding:9px 18px;font-family:'Montserrat',sans-serif;
-  font-size:.6rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;
-  transition:all .3s;border-radius:2px;white-space:nowrap;}
+  padding:8px 16px;font-family:'Montserrat',sans-serif;
+  font-size:.58rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  transition:all .3s;border-radius:2px;white-space:nowrap;cursor:pointer;}
 .cmt-post:hover{background:var(--pink2);}
-.cmt-list{display:flex;flex-direction:column;gap:7px;max-height:200px;overflow-y:auto;}
+.cmt-list{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;}
 .cmt-list::-webkit-scrollbar{width:2px;}
 .cmt-list::-webkit-scrollbar-thumb{background:var(--pink);}
-.cmt-item{background:rgba(26,14,34,.5);border:1px solid rgba(255,26,108,.06);
-  padding:9px 12px;border-radius:2px;}
-.cmt-item.hidden{opacity:.3;border-style:dashed;}
-.cmt-author{font-size:.6rem;font-weight:600;color:var(--pink2);letter-spacing:2px;
+.cmt-item{background:rgba(26,14,34,.5);border:1px solid rgba(255,26,108,.05);
+  padding:8px 11px;border-radius:2px;}
+.cmt-author{font-size:.58rem;font-weight:600;color:var(--pink2);letter-spacing:2px;
   text-transform:uppercase;margin-bottom:3px;}
-.cmt-body{font-size:.72rem;color:rgba(255,255,255,.52);line-height:1.6;}
-.cmt-time{font-size:.48rem;color:rgba(255,255,255,.16);letter-spacing:1px;margin-top:3px;}
-.cmt-empty{font-size:.62rem;color:rgba(255,255,255,.14);
-  letter-spacing:2px;text-align:center;padding:16px 0;}
+.cmt-body{font-size:.7rem;color:rgba(255,255,255,.5);line-height:1.6;}
+.cmt-time{font-size:.46rem;color:rgba(255,255,255,.14);letter-spacing:1px;margin-top:2px;}
+.cmt-empty{font-size:.6rem;color:rgba(255,255,255,.12);
+  letter-spacing:2px;text-align:center;padding:12px 0;}
 
 /* SOCIALS */
 .socials-sec{position:relative;z-index:10;padding:36px 48px 52px;
@@ -317,13 +288,12 @@ footer{position:relative;z-index:10;
 
 @media(max-width:768px){
   nav{padding:12px 16px;}.nav-pill span{display:none;}
-  .sec-head,.slider-wrap,.socials-sec,footer{padding-left:16px;padding-right:16px;}
+  .sec-head,.videos-grid,.socials-sec,footer{padding-left:16px;padding-right:16px;}
   .hero-title,.hero-title2{font-size:clamp(3rem,14vw,6rem);}
   .stats-bar{grid-template-columns:1fr 1fr;}
+  .videos-grid{grid-template-columns:1fr;}
   .cmt-input-row{flex-direction:column;}
   .cmt-name{width:100%;}
-  .vcard{flex:0 0 200px;}
-  .slider-wrap::before,.slider-wrap::after{width:16px;}
 }
 </style>
 </head>
@@ -331,6 +301,7 @@ footer{position:relative;z-index:10;
 <div class="grain"></div>
 <canvas id="lq"></canvas>
 
+<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">
     <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
@@ -360,6 +331,7 @@ footer{position:relative;z-index:10;
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"
     style="background-image:url('https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w1200-h800')">
@@ -381,11 +353,13 @@ footer{position:relative;z-index:10;
   <div class="hero-scroll"><div class="hero-scroll-line"></div><span>SCROLL</span></div>
 </section>
 
+<!-- AD TOP -->
 <div class="ad-bar">
   <div class="ad-lbl">Advertisement</div>
   <!-- PASTE GOOGLE ADSENSE 728x90 CODE HERE -->
 </div>
 
+<!-- STATS -->
 <div class="stats-bar" id="statsBar">
   <div class="stat-box">
     <div class="stat-num" id="totalVisits">0</div>
@@ -401,24 +375,122 @@ footer{position:relative;z-index:10;
   </div>
 </div>
 
+<!-- VIDEOS — Autoplay Loop, No Controls, Mute Button Only -->
 <section class="section" id="videos">
   <div class="sec-head">
     <div class="sec-label">Exclusive Content</div>
-    <h2 class="sec-title">Latest <em>Videos</em></h2>
-    <p class="sec-sub">Click any video to watch instantly</p>
+    <h2 class="sec-title">Watch <em>Now</em></h2>
+    <p class="sec-sub">Videos play automatically · Use 🔊 to toggle sound</p>
   </div>
-  <div class="slider-wrap">
-    <button class="slider-btn slider-btn-l" onclick="slide(-1)">&#8592;</button>
-    <div class="slider-track" id="sliderTrack"></div>
-    <button class="slider-btn slider-btn-r" onclick="slide(1)">&#8594;</button>
+
+  <div class="videos-grid">
+
+    <!-- VIDEO 1 -->
+    <div class="video-card" id="vc1">
+      <div class="vc-player" id="vp1">
+        <!-- Google Drive preview — autoplay loop via URL params -->
+        <iframe
+          id="if1"
+          src="https://drive.google.com/file/d/1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn/preview?autoplay=1&loop=1&controls=0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen="false">
+        </iframe>
+        <!-- Mute toggle button -->
+        <button class="mute-btn" id="mb1" onclick="toggleMute(1)" title="Toggle Sound">
+          <!-- Muted icon (default) -->
+          <svg id="mi1-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <!-- Sound icon (hidden by default) -->
+          <svg id="mi1-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+      </div>
+      <div class="vc-info">
+        <div class="vc-title">Bottomgirl Exclusive</div>
+        <div class="vc-meta">
+          <span class="vc-badge vc-badge-new">New</span>
+          <span class="vc-dur">⏱ 4 sec</span>
+        </div>
+        <a class="vc-of" href="https://onlyfans.com/u355085640" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
+          More on OnlyFans
+        </a>
+      </div>
+      <div class="vc-cmts">
+        <div class="vc-cmts-title">
+          Comments <span class="vc-cmt-count" id="cc1"></span>
+        </div>
+        <div class="cmt-input-row">
+          <input class="cmt-name" type="text" id="cn1" placeholder="Your name" maxlength="28">
+          <textarea class="cmt-text" id="ct1" placeholder="Write a comment..." rows="2" maxlength="280"></textarea>
+          <button class="cmt-post" onclick="postCmt('hc1','cn1','ct1','cl1','cc1')">Post</button>
+        </div>
+        <div class="cmt-list" id="cl1">
+          <div class="cmt-empty">No comments yet. Be the first!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO 2 -->
+    <div class="video-card" id="vc2">
+      <div class="vc-player" id="vp2">
+        <iframe
+          id="if2"
+          src="https://drive.google.com/file/d/1DmPpdjQbXktkSI1QapIgbcHHxFATdup4/preview?autoplay=1&loop=1&controls=0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen="false">
+        </iframe>
+        <button class="mute-btn" id="mb2" onclick="toggleMute(2)" title="Toggle Sound">
+          <svg id="mi2-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <svg id="mi2-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+      </div>
+      <div class="vc-info">
+        <div class="vc-title">Wanna Make My Pussy Wet</div>
+        <div class="vc-meta">
+          <span class="vc-badge vc-badge-exc">⭐ Exclusive</span>
+          <span class="vc-dur">⏱ 2:44</span>
+        </div>
+        <a class="vc-of" href="https://onlyfans.com/u355085640" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
+          More on OnlyFans
+        </a>
+      </div>
+      <div class="vc-cmts">
+        <div class="vc-cmts-title">
+          Comments <span class="vc-cmt-count" id="cc2"></span>
+        </div>
+        <div class="cmt-input-row">
+          <input class="cmt-name" type="text" id="cn2" placeholder="Your name" maxlength="28">
+          <textarea class="cmt-text" id="ct2" placeholder="Write a comment..." rows="2" maxlength="280"></textarea>
+          <button class="cmt-post" onclick="postCmt('hc2','cn2','ct2','cl2','cc2')">Post</button>
+        </div>
+        <div class="cmt-list" id="cl2">
+          <div class="cmt-empty">No comments yet. Be the first!</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
+<!-- AD MID -->
 <div class="ad-bar" style="margin-top:20px;">
   <div class="ad-lbl">Advertisement</div>
   <!-- PASTE GOOGLE ADSENSE 300x250 CODE HERE -->
 </div>
 
+<!-- SOCIALS -->
 <div class="socials-sec">
   <a class="soc-btn soc-of" href="https://onlyfans.com/u355085640" target="_blank">
     <svg class="soc-ico" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
@@ -444,51 +516,6 @@ footer{position:relative;z-index:10;
   <div class="ft-copy">© 2025 · All Rights Reserved · 18+ Only</div>
 </footer>
 
-<!-- VIDEO MODAL — proper 16:9, no fullscreen, no share -->
-<div class="modal-bg" id="modalBg">
-  <div class="modal-box">
-
-    <!-- VIDEO CROP BOX — 16:9 ratio, hides Drive UI bars -->
-    <div class="vid-crop" oncontextmenu="return false;">
-      <iframe
-        id="modalFrame"
-        src=""
-        allow="autoplay"
-        allowfullscreen="false">
-      </iframe>
-    </div>
-
-    <div class="modal-body">
-      <div class="modal-top-row">
-        <div class="modal-vtitle" id="mTitle">Video</div>
-        <button class="modal-close" onclick="closeModal()">✕</button>
-      </div>
-      <div class="modal-desc" id="mDesc"></div>
-    </div>
-    <div class="modal-links">
-      <a class="modal-link" href="https://onlyfans.com/u355085640" target="_blank">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
-        More on OnlyFans
-      </a>
-      <a class="modal-link" href="https://twitter.com/l_sreejith87497" target="_blank">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.849L2.25 2.25h6.928l4.279 5.658 5.787-5.658Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        Follow on X
-      </a>
-    </div>
-    <div class="cmt-section">
-      <div class="cmt-title">Comments <span class="cmt-count" id="cmtCount"></span></div>
-      <div class="cmt-input-row">
-        <input class="cmt-name" type="text" id="cName" placeholder="Your name" maxlength="28">
-        <textarea class="cmt-text" id="cText" placeholder="Write a comment..." rows="2" maxlength="280"></textarea>
-        <button class="cmt-post" onclick="postComment()">Post</button>
-      </div>
-      <div class="cmt-list" id="cmtList">
-        <div class="cmt-empty" id="cmtEmpty">No comments yet. Be the first!</div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script type="application/ld+json">
@@ -507,7 +534,7 @@ for(let i=0;i<10;i++)blobs.push(mkB(i));
 
 // SCROLL REVEAL
 const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*80);});},{threshold:.07});
-document.querySelectorAll('.stat-box').forEach(el=>io.observe(el));
+document.querySelectorAll('.stat-box,.video-card').forEach(el=>io.observe(el));
 
 // VISITOR COUNTER
 function updateVisits(){
@@ -525,27 +552,53 @@ function updateVisits(){
   document.getElementById('visitorNum').textContent=total.toLocaleString();
 }
 
-// VIDEOS
-const VIDEOS=[
-  {id:'hc1',title:'Bottomgirl Exclusive',badge:'new',duration:'4 sec',description:'',
-   videoId:'1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn',thumbId:'1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx'},
-  {id:'hc2',title:'Wanna Make My Pussy Wet',badge:'exclusive',duration:'2:44',description:'',
-   videoId:'1DmPpdjQbXktkSI1QapIgbcHHxFATdup4',thumbId:null}
-];
+// MUTE TOGGLE
+// Since iframe blocks JS control, we reload
+// the iframe src with mute=1 or mute=0
+const muteState={1:true,2:true}; // both muted by default
+const videoIds={
+  1:'1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn',
+  2:'1DmPpdjQbXktkSI1QapIgbcHHxFATdup4'
+};
 
+function buildSrc(id,muted){
+  const m=muted?'&mute=1':'';
+  return`https://drive.google.com/file/d/${videoIds[id]}/preview?autoplay=1&loop=1&controls=0${m}`;
+}
+
+function toggleMute(n){
+  muteState[n]=!muteState[n];
+  // Reload iframe with new mute state
+  const iframe=document.getElementById('if'+n);
+  iframe.src=buildSrc(n,muteState[n]);
+  // Toggle icons
+  document.getElementById('mi'+n+'-off').style.display=muteState[n]?'block':'none';
+  document.getElementById('mi'+n+'-on').style.display=muteState[n]?'none':'block';
+  // If unmuting one, mute the other (avoid 2 sounds at once)
+  if(!muteState[n]){
+    const other=n===1?2:1;
+    if(!muteState[other]){
+      muteState[other]=true;
+      document.getElementById('if'+other).src=buildSrc(other,true);
+      document.getElementById('mi'+other+'-off').style.display='block';
+      document.getElementById('mi'+other+'-on').style.display='none';
+    }
+  }
+  showToast(muteState[n]?'🔇 Muted':'🔊 Sound On');
+}
+
+// Set initial muted src on load
+window.addEventListener('DOMContentLoaded',()=>{
+  updateVisits();
+  document.getElementById('if1').src=buildSrc(1,true);
+  document.getElementById('if2').src=buildSrc(2,true);
+  loadComments();
+});
+
+// COMMENTS
 let comments=JSON.parse(localStorage.getItem('bg_cmts')||'{}');
 function saveCmts(){localStorage.setItem('bg_cmts',JSON.stringify(comments));}
-function thumbUrl(id){return`https://drive.google.com/thumbnail?id=${id}&sz=w480-h270`;}
 
-// EMBED URL — plain /preview, works best
-function embedUrl(id){return`https://drive.google.com/file/d/${id}/preview`;}
-
-function badgeHTML(t){
-  if(!t)return'';
-  return{exclusive:`<span class="bdg bdg-exc">⭐ Exclusive</span>`,
-    new:`<span class="bdg bdg-new">New</span>`,
-    hot:`<span class="bdg bdg-hot">🔥 Hot</span>`}[t]||'';
-}
 function timeAgo(ts){
   const s=Math.floor((Date.now()-ts)/1000);
   if(s<60)return'just now';
@@ -554,113 +607,48 @@ function timeAgo(ts){
   return Math.floor(s/86400)+'d ago';
 }
 
-// RENDER SLIDER
-function renderSlider(){
-  const track=document.getElementById('sliderTrack');
-  track.innerHTML=VIDEOS.map(v=>{
-    const thumb=v.thumbId?thumbUrl(v.thumbId):null;
-    return`<div class="vcard" data-id="${v.id}">
-      <div class="vthumb">
-        ${thumb
-          ?`<img src="${thumb}" alt="${v.title}" loading="lazy">`
-          :`<div class="vph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="width:36px;height:36px;"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div>`}
-        <div class="badge-wrap">${badgeHTML(v.badge)}</div>
-        <div class="vov"><div class="play-circle">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-        </div></div>
-        <div class="watch-strip">▶ Watch Now</div>
-      </div>
-      <div class="vbody">
-        <div class="vtitle">${v.title}</div>
-        <div class="vmeta">
-          ${v.duration?`<span class="vmt">⏱ ${v.duration}</span>`:''}
-          <span class="vmt">${(comments[v.id]||[]).filter(c=>!c.hidden).length} comments</span>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-  document.querySelectorAll('.vcard').forEach((el,i)=>{
-    setTimeout(()=>el.classList.add('in'),i*120);
-    io.observe(el);
-    el.addEventListener('click',()=>openModal(el.dataset.id));
-  });
+function loadComments(){
+  renderCmts('hc1','cl1','cc1');
+  renderCmts('hc2','cl2','cc2');
 }
 
-function slide(dir){
-  document.getElementById('sliderTrack').scrollBy({left:dir*280,behavior:'smooth'});
-}
-
-// MODAL
-let currentVid=null;
-function openModal(id){
-  currentVid=id;
-  const v=VIDEOS.find(v=>v.id===id);
-  if(!v)return;
-  document.getElementById('mTitle').textContent=v.title;
-  document.getElementById('mDesc').textContent=v.description||'';
-  // Set src AFTER modal is open so it loads properly
-  document.getElementById('modalBg').classList.add('open');
-  setTimeout(()=>{
-    document.getElementById('modalFrame').src=embedUrl(v.videoId);
-  },100);
-  renderComments(id);
-}
-function closeModal(){
-  document.getElementById('modalBg').classList.remove('open');
-  // Clear src after close animation
-  setTimeout(()=>{document.getElementById('modalFrame').src='';},400);
-  currentVid=null;
-}
-document.getElementById('modalBg').addEventListener('click',e=>{
-  if(e.target===e.currentTarget)closeModal();
-});
-document.addEventListener('contextmenu',e=>{
-  if(e.target.closest('.vid-crop'))e.preventDefault();
-});
-
-// COMMENTS
-function renderComments(videoId){
-  const list=document.getElementById('cmtList');
-  const empty=document.getElementById('cmtEmpty');
-  const count=document.getElementById('cmtCount');
-  const all=comments[videoId]||[];
+function renderCmts(vid,listId,countId){
+  const list=document.getElementById(listId);
+  const count=document.getElementById(countId);
+  const all=comments[vid]||[];
   const vis=all.filter(c=>!c.hidden);
   count.textContent=vis.length?`(${vis.length})`:'';
-  if(!all.length){empty.style.display='block';list.innerHTML='';return;}
-  empty.style.display='none';
-  list.innerHTML=all.map((c,i)=>`
-    <div class="cmt-item ${c.hidden?'hidden':''}">
+  if(!all.length){
+    list.innerHTML='<div class="cmt-empty">No comments yet. Be the first!</div>';
+    return;
+  }
+  list.innerHTML=vis.map(c=>`
+    <div class="cmt-item">
       <div class="cmt-author">${c.name}</div>
       <div class="cmt-body">${c.text}</div>
-      <div class="cmt-time">${timeAgo(c.ts)}${c.hidden?' · Hidden':''}</div>
+      <div class="cmt-time">${timeAgo(c.ts)}</div>
     </div>
   `).join('');
 }
-function postComment(){
-  const name=document.getElementById('cName').value.trim();
-  const text=document.getElementById('cText').value.trim();
+
+function postCmt(vid,nameId,textId,listId,countId){
+  const name=document.getElementById(nameId).value.trim();
+  const text=document.getElementById(textId).value.trim();
   if(!name){showToast('Enter your name');return;}
   if(!text){showToast('Write a comment');return;}
-  if(!currentVid)return;
-  if(!comments[currentVid])comments[currentVid]=[];
-  comments[currentVid].push({name,text,ts:Date.now(),hidden:false});
+  if(!comments[vid])comments[vid]=[];
+  comments[vid].push({name,text,ts:Date.now(),hidden:false});
   saveCmts();
-  document.getElementById('cName').value='';
-  document.getElementById('cText').value='';
-  renderComments(currentVid);renderSlider();
+  document.getElementById(nameId).value='';
+  document.getElementById(textId).value='';
+  renderCmts(vid,listId,countId);
   showToast('Comment posted!');
 }
-
-// INIT
-window.addEventListener('DOMContentLoaded',()=>{
-  updateVisits();
-  renderSlider();
-});
 
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('on');
-  setTimeout(()=>t.classList.remove('on'),3000);
+  setTimeout(()=>t.classList.remove('on'),2500);
 }
 </script>
 </body>
