@@ -100,6 +100,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .ad-lbl{font-size:.42rem;letter-spacing:3px;color:rgba(255,255,255,.1);
   text-transform:uppercase;margin-bottom:4px;}
 
+/* STATS BAR */
 .stats-bar{position:relative;z-index:10;
   border-bottom:1px solid rgba(255,26,108,.07);
   display:grid;grid-template-columns:repeat(3,1fr);}
@@ -110,124 +111,55 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .stat-num{font-family:'Playfair Display',serif;font-size:2rem;
   font-weight:700;color:var(--pink);line-height:1;margin-bottom:5px;}
 .stat-label{font-size:.52rem;letter-spacing:3px;color:rgba(255,255,255,.22);text-transform:uppercase;}
+.stat-sub{font-size:.44rem;color:rgba(255,255,255,.14);letter-spacing:2px;margin-top:3px;}
 
 .section{position:relative;z-index:10;padding:52px 0 40px;}
 .sec-head{padding:0 48px;margin-bottom:32px;}
 .sec-label{font-size:.55rem;letter-spacing:5px;text-transform:uppercase;
   color:var(--pink);margin-bottom:8px;display:flex;align-items:center;gap:12px;}
-.sec-label::after{content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,rgba(255,26,108,.4),transparent);}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,26,108,.4),transparent);}
 .sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,3rem);
   font-weight:400;color:#fff;margin-bottom:4px;}
 .sec-title em{font-style:italic;color:var(--pink2);}
 .sec-sub{font-size:.65rem;color:rgba(255,255,255,.22);letter-spacing:2px;}
 
-/* ══════════════════════════════════════════
-   VIDEO CARDS
-   Uses thumbnail image + click to open
-   Google Drive in a proper viewer
-   This is the MOST RELIABLE method
-   Works on 100% of devices
-══════════════════════════════════════════ */
-.videos-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
-  gap:3px;
-  padding:0 48px;
-}
-
-.video-card{
-  background:var(--black2);
-  border:1px solid rgba(255,26,108,.1);
-  border-radius:4px;
-  overflow:hidden;
+.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
+  gap:3px;padding:0 48px;}
+.video-card{background:var(--black2);border:1px solid rgba(255,26,108,.1);
+  border-radius:4px;overflow:hidden;
   opacity:0;transform:translateY(24px);
-  transition:opacity .5s,transform .5s,border-color .3s,box-shadow .3s;
-}
+  transition:opacity .5s,transform .5s,border-color .3s,box-shadow .3s;}
 .video-card.in{opacity:1;transform:translateY(0);}
 .video-card:hover{border-color:rgba(255,26,108,.4);box-shadow:0 16px 48px rgba(255,26,108,.18);}
-
-/* THUMBNAIL + PLAY OVERLAY */
-.vc-thumb{
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  overflow:hidden;
-  background:var(--black3);
-  cursor:pointer;
-}
-.vc-thumb img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .5s ease;
-}
+.vc-thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;
+  background:var(--black3);cursor:pointer;}
+.vc-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
 .vc-thumb:hover img{transform:scale(1.05);}
-.vc-thumb-ph{
-  width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--black3),var(--black4));
-}
-
-/* BIG PLAY BUTTON OVERLAY */
-.vc-play-ov{
-  position:absolute;inset:0;
-  background:rgba(4,3,10,.4);
-  display:flex;align-items:center;justify-content:center;
-  transition:background .3s;
-}
+.vc-thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--black3),var(--black4));}
+.vc-play-ov{position:absolute;inset:0;background:rgba(4,3,10,.4);
+  display:flex;align-items:center;justify-content:center;transition:background .3s;}
 .vc-thumb:hover .vc-play-ov{background:rgba(255,26,108,.15);}
-.vc-play-circle{
-  width:72px;height:72px;
-  border:2.5px solid #fff;border-radius:50%;
+.vc-play-circle{width:72px;height:72px;border:2.5px solid #fff;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  background:rgba(255,26,108,.3);
-  box-shadow:0 0 40px rgba(255,26,108,.4);
-  transition:all .3s;
-}
-.vc-thumb:hover .vc-play-circle{
-  background:var(--pink);
-  transform:scale(1.1);
-  box-shadow:0 0 60px var(--glow);
-}
+  background:rgba(255,26,108,.3);box-shadow:0 0 40px rgba(255,26,108,.4);transition:all .3s;}
+.vc-thumb:hover .vc-play-circle{background:var(--pink);transform:scale(1.1);box-shadow:0 0 60px var(--glow);}
 .vc-play-circle svg{width:28px;height:28px;margin-left:4px;}
-
-/* LIVE LABEL */
-.vc-live{
-  position:absolute;top:10px;left:10px;
-  background:rgba(4,3,10,.85);
-  border:1px solid rgba(255,26,108,.3);
+.vc-live{position:absolute;top:10px;left:10px;
+  background:rgba(4,3,10,.85);border:1px solid rgba(255,26,108,.3);
   padding:3px 10px;border-radius:2px;
   font-size:.48rem;letter-spacing:3px;text-transform:uppercase;
-  color:var(--pink3);display:flex;align-items:center;gap:5px;
-}
-.vc-live-dot{width:5px;height:5px;border-radius:50%;background:var(--pink);
-  animation:blink 1.5s infinite;}
-
-/* IFRAME PLAYER — shown after click */
-.vc-player{
-  display:none;
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  background:#000;
-  overflow:hidden;
-}
+  color:var(--pink3);display:flex;align-items:center;gap:5px;}
+.vc-live-dot{width:5px;height:5px;border-radius:50%;background:var(--pink);animation:blink 1.5s infinite;}
+.vc-player{display:none;position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden;}
 .vc-player.active{display:block;}
-.vc-player iframe{
-  position:absolute;
-  top:-56px;left:0;
-  width:100%;
-  height:calc(100% + 112px);
-  border:none;
-}
-.vc-close{
-  position:absolute;top:8px;right:8px;z-index:20;
+.vc-player iframe{position:absolute;top:-56px;left:0;width:100%;height:calc(100% + 112px);border:none;}
+.vc-close{position:absolute;top:8px;right:8px;z-index:20;
   background:rgba(4,3,10,.85);border:1px solid rgba(255,26,108,.3);
   color:#fff;width:30px;height:30px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:.7rem;cursor:pointer;transition:all .3s;
-}
+  font-size:.7rem;cursor:pointer;transition:all .3s;}
 .vc-close:hover{background:var(--pink);}
-
 .vc-info{padding:16px 18px 18px;}
 .vc-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
   color:#fff;margin-bottom:6px;}
@@ -241,11 +173,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   padding:10px 16px;background:rgba(255,26,108,.08);
   border:1px solid rgba(255,26,108,.2);border-radius:2px;
   text-decoration:none;color:rgba(255,255,255,.6);
-  font-size:.58rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;
-  transition:all .3s;}
+  font-size:.58rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;transition:all .3s;}
 .vc-of:hover{background:rgba(255,26,108,.15);border-color:var(--pink);color:#fff;}
 .vc-of svg{width:13px;height:13px;flex-shrink:0;}
-
 .vc-cmts{border-top:1px solid rgba(255,26,108,.07);padding:14px 18px 18px;}
 .vc-cmts-title{font-family:'Playfair Display',serif;font-size:.95rem;color:#fff;
   margin-bottom:12px;display:flex;align-items:center;gap:8px;}
@@ -276,8 +206,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   text-transform:uppercase;margin-bottom:3px;}
 .cmt-body{font-size:.7rem;color:rgba(255,255,255,.5);line-height:1.6;}
 .cmt-time{font-size:.46rem;color:rgba(255,255,255,.14);letter-spacing:1px;margin-top:2px;}
-.cmt-empty{font-size:.6rem;color:rgba(255,255,255,.12);
-  letter-spacing:2px;text-align:center;padding:12px 0;}
+.cmt-empty{font-size:.6rem;color:rgba(255,255,255,.12);letter-spacing:2px;text-align:center;padding:12px 0;}
 
 .socials-sec{position:relative;z-index:10;padding:36px 48px 52px;
   display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
@@ -299,9 +228,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 footer{position:relative;z-index:10;
   border-top:1px solid rgba(255,26,108,.06);padding:24px 48px;
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
-.ft-logo{display:flex;align-items:center;gap:8px;
-  font-family:'Playfair Display',serif;font-size:.85rem;
-  letter-spacing:3px;color:rgba(255,255,255,.12);text-transform:uppercase;}
+.ft-logo{display:flex;align-items:center;gap:8px;font-family:'Playfair Display',serif;
+  font-size:.85rem;letter-spacing:3px;color:rgba(255,255,255,.12);text-transform:uppercase;}
 .ft-copy{font-size:.48rem;letter-spacing:3px;color:rgba(255,255,255,.07);text-transform:uppercase;}
 
 .toast{position:fixed;bottom:22px;right:22px;z-index:9000;
@@ -312,7 +240,6 @@ footer{position:relative;z-index:10;
 
 @keyframes fU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fD{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-
 @media(max-width:768px){
   nav{padding:12px 16px;}.nav-pill span{display:none;}
   .sec-head,.videos-grid,.socials-sec,footer{padding-left:16px;padding-right:16px;}
@@ -343,8 +270,8 @@ footer{position:relative;z-index:10;
   <div class="nav-right">
     <div class="visitor-badge">
       <div class="dot"></div>
-      <span class="visitor-num" id="visitorNum">0</span>
-      <span>visits</span>
+      <span class="visitor-num" id="visitorNum">...</span>
+      <span>today</span>
     </div>
     <a class="nav-pill" href="https://twitter.com/l_sreejith87497" target="_blank">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.849L2.25 2.25h6.928l4.279 5.658 5.787-5.658Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -381,10 +308,23 @@ footer{position:relative;z-index:10;
   <!-- PASTE GOOGLE ADSENSE 728x90 CODE HERE -->
 </div>
 
+<!-- REAL VISITOR STATS -->
 <div class="stats-bar" id="statsBar">
-  <div class="stat-box"><div class="stat-num" id="totalVisits">0</div><div class="stat-label">Total Visits</div></div>
-  <div class="stat-box"><div class="stat-num" id="todayVisits">0</div><div class="stat-label">Visits Today</div></div>
-  <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Videos</div></div>
+  <div class="stat-box">
+    <div class="stat-num" id="todayCount">...</div>
+    <div class="stat-label">Visitors Today</div>
+    <div class="stat-sub" id="todayDate">—</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num" id="yesterdayCount">...</div>
+    <div class="stat-label">Yesterday</div>
+    <div class="stat-sub">Previous Day</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num" id="totalCount">...</div>
+    <div class="stat-label">All Time</div>
+    <div class="stat-sub">Total Visitors</div>
+  </div>
 </div>
 
 <section class="section" id="videos">
@@ -393,12 +333,10 @@ footer{position:relative;z-index:10;
     <h2 class="sec-title">Watch <em>Now</em></h2>
     <p class="sec-sub">Tap any video to play instantly</p>
   </div>
-
   <div class="videos-grid">
 
     <!-- VIDEO 1 -->
     <div class="video-card" id="vc1">
-      <!-- THUMBNAIL — tap to play -->
       <div class="vc-thumb" id="vt1" onclick="playVideo(1)">
         <img src="https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w800-h450"
           alt="Bottomgirl Exclusive"
@@ -415,7 +353,6 @@ footer{position:relative;z-index:10;
         </div>
         <div class="vc-live"><div class="vc-live-dot"></div>EXCLUSIVE</div>
       </div>
-      <!-- PLAYER — shown after tap -->
       <div class="vc-player" id="vp1">
         <button class="vc-close" onclick="closeVideo(1)">✕</button>
         <iframe id="if1" src="" allow="autoplay" allowfullscreen="false"></iframe>
@@ -535,17 +472,91 @@ for(let i=0;i<10;i++)blobs.push(mkB(i));
 const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*80);});},{threshold:.07});
 document.querySelectorAll('.stat-box,.video-card').forEach(el=>io.observe(el));
 
-// VISITOR COUNTER
-function updateVisits(){
-  let total=parseInt(localStorage.getItem('bg_total')||'0')+1;
-  localStorage.setItem('bg_total',total);
-  const today=new Date().toDateString();
-  if(localStorage.getItem('bg_day')!==today){localStorage.setItem('bg_day',today);localStorage.setItem('bg_today','0');}
-  let todayN=parseInt(localStorage.getItem('bg_today')||'0')+1;
-  localStorage.setItem('bg_today',todayN);
-  document.getElementById('totalVisits').textContent=total.toLocaleString();
-  document.getElementById('todayVisits').textContent=todayN.toLocaleString();
-  document.getElementById('visitorNum').textContent=total.toLocaleString();
+// ══════════════════════════════════════════════════
+// REAL VISITOR COUNTER
+// Uses CountAPI — a free real counter service
+// Counts REAL visitors from ALL devices globally
+// Resets every 24 hours automatically
+// Refreshing does NOT increase the count
+// because we check sessionStorage first
+// ══════════════════════════════════════════════════
+const SITE_KEY = 'bottomgirl-official-2025';
+
+async function loadVisitorStats(){
+  const today = new Date().toISOString().split('T')[0]; // e.g. 2025-03-20
+  const yesterday = new Date(Date.now()-86400000).toISOString().split('T')[0];
+
+  // Check if this session already counted today
+  // So refreshing the page does NOT increase count
+  const sessionKey = 'bg_session_' + today;
+  const alreadyCounted = sessionStorage.getItem(sessionKey);
+
+  try{
+    // Always fetch current counts to display
+    // Only increment if this is a new session today
+    if(!alreadyCounted){
+      // New visitor today — hit the counter
+      const hitRes = await fetch(
+        `https://api.countapi.xyz/hit/${SITE_KEY}/${today}`
+      );
+      const hitData = await hitRes.json();
+      // Mark this session as counted
+      sessionStorage.setItem(sessionKey,'1');
+      document.getElementById('todayCount').textContent = hitData.value.toLocaleString();
+      document.getElementById('visitorNum').textContent = hitData.value.toLocaleString();
+    } else {
+      // Already counted — just fetch without incrementing
+      const getRes = await fetch(
+        `https://api.countapi.xyz/get/${SITE_KEY}/${today}`
+      );
+      const getData = await getRes.json();
+      const val = getData.value || 0;
+      document.getElementById('todayCount').textContent = val.toLocaleString();
+      document.getElementById('visitorNum').textContent = val.toLocaleString();
+    }
+
+    // Get yesterday count
+    try{
+      const yRes = await fetch(
+        `https://api.countapi.xyz/get/${SITE_KEY}/${yesterday}`
+      );
+      const yData = await yRes.json();
+      document.getElementById('yesterdayCount').textContent = (yData.value||0).toLocaleString();
+    }catch(e){
+      document.getElementById('yesterdayCount').textContent = '0';
+    }
+
+    // Get all time total
+    try{
+      const totalRes = await fetch(
+        `https://api.countapi.xyz/get/${SITE_KEY}/alltime`
+      );
+      const totalData = await totalRes.json();
+
+      // If new visitor, also increment alltime
+      if(!alreadyCounted){
+        await fetch(`https://api.countapi.xyz/hit/${SITE_KEY}/alltime`);
+        document.getElementById('totalCount').textContent = ((totalData.value||0)+1).toLocaleString();
+      } else {
+        document.getElementById('totalCount').textContent = (totalData.value||0).toLocaleString();
+      }
+    }catch(e){
+      document.getElementById('totalCount').textContent = '—';
+    }
+
+    // Show today's date
+    const d = new Date();
+    const dateStr = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    document.getElementById('todayDate').textContent = dateStr;
+
+  }catch(err){
+    // If CountAPI fails, fallback gracefully
+    console.log('Counter unavailable');
+    document.getElementById('todayCount').textContent = '—';
+    document.getElementById('yesterdayCount').textContent = '—';
+    document.getElementById('totalCount').textContent = '—';
+    document.getElementById('visitorNum').textContent = '—';
+  }
 }
 
 // VIDEO IDs
@@ -554,18 +565,14 @@ const VIDEO_IDS={
   2:'1DmPpdjQbXktkSI1QapIgbcHHxFATdup4'
 };
 
-// PLAY VIDEO — hide thumbnail, show iframe
 function playVideo(n){
   const thumb=document.getElementById('vt'+n);
   const player=document.getElementById('vp'+n);
   const iframe=document.getElementById('if'+n);
-  // Set iframe src when user taps — triggers autoplay on user gesture
   iframe.src=`https://drive.google.com/file/d/${VIDEO_IDS[n]}/preview`;
   thumb.style.display='none';
   player.classList.add('active');
 }
-
-// CLOSE VIDEO — show thumbnail again
 function closeVideo(n){
   const thumb=document.getElementById('vt'+n);
   const player=document.getElementById('vp'+n);
@@ -611,7 +618,7 @@ function postCmt(vid,nameId,textId,listId,countId){
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
-  updateVisits();
+  loadVisitorStats();
   renderCmts('hc1','cl1','cc1');
   renderCmts('hc2','cl2','cc2');
 });
