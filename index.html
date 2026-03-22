@@ -8,13 +8,14 @@
 <meta name="keywords" content="bottom girl, adult content, exclusive videos, bottom girl official">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#ff1a6c">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --pink:#ff1a6c;--pink2:#ff5fa0;--pink3:#ffb3d0;
   --black:#04030a;--black2:#0a0812;--black3:#130f1e;--black4:#1a1428;
-  --glow:rgba(255,26,108,.6);--gold:#d4a853;
+  --glow:rgba(255,26,108,.6);--gold:#d4a853;--gold2:#f0c96e;
+  --vip1:#1a0a00;--vip2:#2d1500;--vip3:#d4a853;
 }
 html,body{width:100%;min-height:100vh;overflow-x:hidden;background:var(--black);}
 body{font-family:'Montserrat',sans-serif;color:#fff;}
@@ -22,9 +23,10 @@ body{font-family:'Montserrat',sans-serif;color:#fff;}
 .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.18;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");}
 
+/* ══ NAV ══ */
 nav{position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 48px;
+  padding:14px 48px;
   background:linear-gradient(to bottom,rgba(4,3,10,.98),transparent);
   backdrop-filter:blur(10px);animation:fD .7s both;
   border-bottom:1px solid rgba(255,26,108,.06);}
@@ -44,20 +46,111 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   padding:6px 12px;background:rgba(255,26,108,.08);
   border:1px solid rgba(255,26,108,.2);border-radius:2px;
   font-size:.55rem;letter-spacing:2px;color:rgba(255,255,255,.5);text-transform:uppercase;}
-.visitor-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--pink);
-  animation:blink 1.6s infinite;}
+.visitor-badge .dot{width:5px;height:5px;border-radius:50%;background:var(--pink);animation:blink 1.6s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .visitor-num{color:var(--pink2);font-weight:600;}
 
+/* ══ NAV MENU BUTTON ══ */
+.nav-menu-wrap{position:relative;display:inline-flex;}
+
+/* The butt button — now lives IN the nav */
+.butt-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 14px;
+  background:rgba(255,26,108,.08);
+  border:1.5px solid rgba(255,26,108,.4);
+  border-radius:6px;
+  cursor:pointer;
+  transition:all .3s;
+  font-family:'Montserrat',sans-serif;
+  font-size:.6rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--pink2);
+  position:relative;
+  overflow:hidden;
+}
+.butt-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,26,108,.12),transparent);
+  transform:translateX(-101%);transition:transform .3s;
+}
+.butt-btn:hover{
+  border-color:var(--pink);
+  color:#fff;
+  box-shadow:0 0 20px rgba(255,26,108,.3);
+}
+.butt-btn:hover::before{transform:translateX(0);}
+.butt-svg{width:26px;height:26px;flex-shrink:0;position:relative;z-index:1;transition:all .3s;}
+.butt-btn:hover .butt-svg{filter:drop-shadow(0 0 6px var(--pink));}
+.butt-btn-text{position:relative;z-index:1;}
+.butt-chevron{position:relative;z-index:1;font-size:.6rem;transition:transform .3s;}
+.butt-btn.open .butt-chevron{transform:rotate(180deg);}
+
+/* DROPDOWN MENU — drops down from nav */
+.float-menu{
+  position:absolute;
+  top:calc(100% + 10px);
+  right:0;
+  min-width:200px;
+  z-index:399;
+  background:rgba(8,6,16,.97);
+  border:1px solid rgba(255,26,108,.25);
+  border-radius:10px;
+  padding:6px;
+  display:flex;flex-direction:column;gap:2px;
+  opacity:0;pointer-events:none;
+  transform:translateY(-8px) scale(.97);
+  transition:all .3s cubic-bezier(.16,.8,.4,1);
+  backdrop-filter:blur(20px);
+  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,26,108,.1);
+}
+.float-menu.open{
+  opacity:1;pointer-events:all;
+  transform:translateY(0) scale(1);
+}
+/* Arrow tip pointing up */
+.float-menu::before{
+  content:'';position:absolute;top:-6px;right:20px;
+  width:12px;height:12px;
+  background:rgba(8,6,16,.97);
+  border-left:1px solid rgba(255,26,108,.25);
+  border-top:1px solid rgba(255,26,108,.25);
+  transform:rotate(45deg);
+}
+.menu-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 20px;border-radius:8px;
+  cursor:pointer;transition:all .3s;
+  font-size:.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.6);white-space:nowrap;
+}
+.menu-item:hover{background:rgba(255,26,108,.12);color:#fff;}
+.menu-item.active{background:rgba(255,26,108,.15);color:var(--pink);}
+.menu-item svg{width:18px;height:18px;flex-shrink:0;}
+.menu-item .live-dot{width:6px;height:6px;border-radius:50%;background:#ff4444;
+  animation:blink .8s infinite;flex-shrink:0;}
+
+/* ══ HERO ══ */
 .hero{position:relative;z-index:10;height:100vh;min-height:600px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;z-index:0;
-  background-size:cover;background-position:center;
-  filter:blur(28px) brightness(.18) saturate(1.5);transform:scale(1.12);}
-.hero-overlay{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(to bottom,rgba(4,3,10,.6) 0%,rgba(4,3,10,.1) 45%,rgba(4,3,10,.97) 100%);}
-.hero-content{position:relative;z-index:2;padding:0 24px;}
+
+/* Transparent video background in hero */
+.hero-videos-bg{
+  position:absolute;inset:0;z-index:0;
+  display:grid;grid-template-columns:1fr 1fr;
+  opacity:.08;pointer-events:none;
+}
+.hero-videos-bg iframe{
+  width:100%;height:100%;border:none;
+  filter:blur(2px) saturate(1.5);
+}
+
+.hero-bg{position:absolute;inset:0;z-index:1;background-size:cover;background-position:center;
+  filter:blur(28px) brightness(.15) saturate(1.5);transform:scale(1.12);}
+.hero-overlay{position:absolute;inset:0;z-index:2;
+  background:linear-gradient(to bottom,rgba(4,3,10,.7) 0%,rgba(4,3,10,.2) 45%,rgba(4,3,10,.97) 100%);}
+.hero-content{position:relative;z-index:3;padding:0 24px;}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:22px;animation:fU .7s .2s both;}
 .hero-eyebrow span{font-size:.55rem;letter-spacing:5px;text-transform:uppercase;color:var(--pink3);font-weight:500;}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--pink);opacity:.5;}
@@ -73,26 +166,26 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fU .8s .75s both;}
 .btn-main{position:relative;overflow:hidden;background:var(--pink);color:#fff;border:none;
   padding:14px 40px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:600;
-  letter-spacing:3px;text-transform:uppercase;transition:all .3s;border-radius:2px;}
+  letter-spacing:3px;text-transform:uppercase;transition:all .3s;border-radius:2px;cursor:pointer;}
 .btn-main::before{content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
   transform:translateX(-101%);transition:transform .35s;}
 .btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 32px var(--glow);}
 .btn-main:hover::before{transform:translateX(0);}
-.btn-line{background:transparent;border:1px solid rgba(255,255,255,.22);
-  color:rgba(255,255,255,.75);padding:14px 32px;
-  font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:500;
+.btn-line{background:transparent;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.75);
+  padding:14px 32px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:500;
   letter-spacing:3px;text-transform:uppercase;text-decoration:none;
   display:inline-flex;align-items:center;gap:8px;transition:all .3s;border-radius:2px;}
 .btn-line:hover{border-color:var(--pink);color:var(--pink);transform:translateY(-3px);}
-.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
-  z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
   color:rgba(255,255,255,.18);font-size:.48rem;letter-spacing:4px;animation:fU 1s 1.1s both;}
 .hero-scroll-line{width:1px;height:40px;
   background:linear-gradient(to bottom,transparent,var(--pink),transparent);
   animation:scrollLine 2s ease-in-out infinite;}
 @keyframes scrollLine{0%,100%{opacity:.4}50%{opacity:1}}
 
+/* ══ ADS ══ */
 .ad-bar{position:relative;z-index:10;background:rgba(6,4,12,.98);
   border-top:1px solid rgba(255,26,108,.06);border-bottom:1px solid rgba(255,26,108,.06);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -100,19 +193,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .ad-lbl{font-size:.42rem;letter-spacing:3px;color:rgba(255,255,255,.1);
   text-transform:uppercase;margin-bottom:4px;}
 
-/* STATS BAR */
-.stats-bar{position:relative;z-index:10;
-  border-bottom:1px solid rgba(255,26,108,.07);
+/* ══ STATS ══ */
+.stats-bar{position:relative;z-index:10;border-bottom:1px solid rgba(255,26,108,.07);
   display:grid;grid-template-columns:repeat(3,1fr);}
 .stat-box{padding:22px;text-align:center;border-right:1px solid rgba(255,26,108,.07);
   opacity:0;transform:translateY(14px);transition:all .5s;}
 .stat-box:last-child{border-right:none;}
 .stat-box.in{opacity:1;transform:translateY(0);}
-.stat-num{font-family:'Playfair Display',serif;font-size:2rem;
-  font-weight:700;color:var(--pink);line-height:1;margin-bottom:5px;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;
+  color:var(--pink);line-height:1;margin-bottom:5px;}
 .stat-label{font-size:.52rem;letter-spacing:3px;color:rgba(255,255,255,.22);text-transform:uppercase;}
 .stat-sub{font-size:.44rem;color:rgba(255,255,255,.14);letter-spacing:2px;margin-top:3px;}
 
+/* ══ SECTION ══ */
 .section{position:relative;z-index:10;padding:52px 0 40px;}
 .sec-head{padding:0 48px;margin-bottom:32px;}
 .sec-label{font-size:.55rem;letter-spacing:5px;text-transform:uppercase;
@@ -123,11 +216,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .sec-title em{font-style:italic;color:var(--pink2);}
 .sec-sub{font-size:.65rem;color:rgba(255,255,255,.22);letter-spacing:2px;}
 
+/* ══ VIDEOS ══ */
 .videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
   gap:3px;padding:0 48px;}
 .video-card{background:var(--black2);border:1px solid rgba(255,26,108,.1);
-  border-radius:4px;overflow:hidden;
-  opacity:0;transform:translateY(24px);
+  border-radius:4px;overflow:hidden;opacity:0;transform:translateY(24px);
   transition:opacity .5s,transform .5s,border-color .3s,box-shadow .3s;}
 .video-card.in{opacity:1;transform:translateY(0);}
 .video-card:hover{border-color:rgba(255,26,108,.4);box-shadow:0 16px 48px rgba(255,26,108,.18);}
@@ -145,7 +238,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   background:rgba(255,26,108,.3);box-shadow:0 0 40px rgba(255,26,108,.4);transition:all .3s;}
 .vc-thumb:hover .vc-play-circle{background:var(--pink);transform:scale(1.1);box-shadow:0 0 60px var(--glow);}
 .vc-play-circle svg{width:28px;height:28px;margin-left:4px;}
-.vc-live{position:absolute;top:10px;left:10px;
+.vc-live-tag{position:absolute;top:10px;left:10px;
   background:rgba(4,3,10,.85);border:1px solid rgba(255,26,108,.3);
   padding:3px 10px;border-radius:2px;
   font-size:.48rem;letter-spacing:3px;text-transform:uppercase;
@@ -176,38 +269,249 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   font-size:.58rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;transition:all .3s;}
 .vc-of:hover{background:rgba(255,26,108,.15);border-color:var(--pink);color:#fff;}
 .vc-of svg{width:13px;height:13px;flex-shrink:0;}
-.vc-cmts{border-top:1px solid rgba(255,26,108,.07);padding:14px 18px 18px;}
-.vc-cmts-title{font-family:'Playfair Display',serif;font-size:.95rem;color:#fff;
-  margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.vc-cmt-count{font-size:.55rem;color:rgba(255,26,108,.45);letter-spacing:2px;}
-.cmt-input-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
-.cmt-name{background:rgba(26,14,34,.8);border:1px solid rgba(255,26,108,.14);
-  color:#fff;padding:8px 11px;font-family:'Montserrat',sans-serif;
-  font-size:.68rem;outline:none;width:110px;transition:border-color .3s;border-radius:2px;}
-.cmt-name:focus{border-color:var(--pink);}
-.cmt-name::placeholder{color:rgba(255,255,255,.16);}
-.cmt-text{flex:1;min-width:140px;background:rgba(26,14,34,.8);
-  border:1px solid rgba(255,26,108,.14);color:#fff;padding:8px 11px;
-  font-family:'Montserrat',sans-serif;font-size:.68rem;outline:none;
-  resize:none;transition:border-color .3s;border-radius:2px;}
-.cmt-text:focus{border-color:var(--pink);}
-.cmt-text::placeholder{color:rgba(255,255,255,.16);}
-.cmt-post{background:var(--pink);color:#fff;border:none;
-  padding:8px 16px;font-family:'Montserrat',sans-serif;
-  font-size:.58rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;
-  transition:all .3s;border-radius:2px;white-space:nowrap;cursor:pointer;}
-.cmt-post:hover{background:var(--pink2);}
-.cmt-list{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;}
-.cmt-list::-webkit-scrollbar{width:2px;}
-.cmt-list::-webkit-scrollbar-thumb{background:var(--pink);}
-.cmt-item{background:rgba(26,14,34,.5);border:1px solid rgba(255,26,108,.05);
-  padding:8px 11px;border-radius:2px;}
-.cmt-author{font-size:.58rem;font-weight:600;color:var(--pink2);letter-spacing:2px;
-  text-transform:uppercase;margin-bottom:3px;}
-.cmt-body{font-size:.7rem;color:rgba(255,255,255,.5);line-height:1.6;}
-.cmt-time{font-size:.46rem;color:rgba(255,255,255,.14);letter-spacing:1px;margin-top:2px;}
-.cmt-empty{font-size:.6rem;color:rgba(255,255,255,.12);letter-spacing:2px;text-align:center;padding:12px 0;}
 
+/* ══ PUBLIC CHAT SECTION ══ */
+.chat-section{position:relative;z-index:10;padding:52px 48px;}
+.chat-box{background:var(--black2);border:1px solid rgba(255,26,108,.15);
+  border-radius:8px;overflow:hidden;max-width:800px;margin:0 auto;}
+.chat-header{padding:18px 22px;background:rgba(255,26,108,.08);
+  border-bottom:1px solid rgba(255,26,108,.1);
+  display:flex;align-items:center;gap:12px;}
+.chat-header-dot{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:blink .8s infinite;}
+.chat-header-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;}
+.chat-header-sub{font-size:.55rem;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-left:auto;}
+/* Tawk.to will inject itself — this is just the container */
+.tawk-container{min-height:400px;display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.2);font-size:.65rem;letter-spacing:2px;}
+
+/* ══ VIP ROOM ══ */
+/* VIP OVERLAY — full screen stunning entrance */
+.vip-overlay{
+  position:fixed;inset:0;z-index:800;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
+}
+.vip-overlay.open{opacity:1;pointer-events:all;}
+
+/* Animated background */
+.vip-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 50%,#3d1a00 0%,#1a0800 40%,#04030a 100%);
+  overflow:hidden;
+}
+/* Floating gold particles */
+.vip-particle{
+  position:absolute;
+  border-radius:50%;
+  background:var(--gold);
+  animation:floatUp linear infinite;
+  opacity:0;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) scale(0);opacity:0;}
+  10%{opacity:.6;}
+  90%{opacity:.3;}
+  100%{transform:translateY(-20vh) scale(1);opacity:0;}
+}
+
+/* VIP curtains */
+.vip-curtain-l,.vip-curtain-r{
+  position:absolute;top:0;bottom:0;width:15%;
+  background:linear-gradient(to right,rgba(30,10,0,.8),transparent);
+  z-index:1;
+}
+.vip-curtain-r{right:0;background:linear-gradient(to left,rgba(30,10,0,.8),transparent);}
+
+/* VIP password screen */
+.vip-pw-screen{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;
+}
+.vip-pw-screen.hidden{display:none;}
+
+/* Gold shimmer animation */
+@keyframes goldShimmer{
+  0%,100%{background-position:0% center;}
+  50%{background-position:100% center;}
+}
+.vip-crown{font-size:3.5rem;margin-bottom:20px;animation:crownFloat 3s ease-in-out infinite;}
+@keyframes crownFloat{0%,100%{transform:translateY(0) rotate(-5deg);}50%{transform:translateY(-12px) rotate(5deg);}}
+
+.vip-pw-title{
+  font-family:'Cinzel',serif;font-size:clamp(2rem,6vw,4rem);
+  background:linear-gradient(135deg,#c9a020,#f0d060,#c9a020,#f0d060);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:goldShimmer 4s linear infinite;
+  margin-bottom:6px;text-align:center;
+}
+.vip-pw-sub{font-size:.58rem;letter-spacing:5px;color:rgba(212,168,83,.5);
+  text-transform:uppercase;margin-bottom:44px;text-align:center;}
+
+.vip-pw-input{
+  width:100%;max-width:360px;
+  background:rgba(30,15,0,.8);
+  border:1px solid rgba(212,168,83,.3);
+  border-radius:4px;color:#fff;
+  padding:16px 24px;font-family:'Montserrat',sans-serif;
+  font-size:.85rem;letter-spacing:4px;outline:none;
+  margin-bottom:12px;
+  transition:border-color .3s;text-align:center;
+  backdrop-filter:blur(10px);
+}
+.vip-pw-input:focus{border-color:var(--gold);}
+.vip-pw-input::placeholder{color:rgba(212,168,83,.2);}
+.vip-pw-err{color:#ff6b6b;font-size:.6rem;letter-spacing:2px;margin-bottom:12px;display:none;}
+
+.btn-vip-enter{
+  width:100%;max-width:360px;
+  background:linear-gradient(135deg,#c9a020,#f0d060,#c9a020);
+  background-size:200% auto;
+  color:#1a0800;border:none;
+  padding:16px 40px;font-family:'Cinzel',sans-serif;
+  font-size:.8rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  transition:all .3s;border-radius:4px;cursor:pointer;
+  animation:goldShimmer 3s linear infinite;
+}
+.btn-vip-enter:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(212,168,83,.4);}
+
+.vip-close{
+  position:absolute;top:20px;right:20px;z-index:20;
+  background:rgba(30,15,0,.8);border:1px solid rgba(212,168,83,.3);
+  color:rgba(212,168,83,.6);width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;cursor:pointer;transition:all .3s;
+}
+.vip-close:hover{border-color:var(--gold);color:var(--gold);}
+
+/* VIP ROOM INTERIOR */
+.vip-room{
+  position:absolute;inset:0;z-index:10;
+  display:none;flex-direction:column;
+  padding:24px;
+}
+.vip-room.open{display:flex;}
+
+.vip-room-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;padding-bottom:16px;
+  border-bottom:1px solid rgba(212,168,83,.15);
+}
+.vip-room-title{
+  font-family:'Cinzel',serif;font-size:1.4rem;
+  background:linear-gradient(135deg,#c9a020,#f0d060);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  display:flex;align-items:center;gap:10px;
+}
+
+/* VIP CHAT MESSAGES */
+.vip-messages{
+  flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;
+  padding:16px;
+  background:rgba(10,5,0,.4);border:1px solid rgba(212,168,83,.1);
+  border-radius:8px;margin-bottom:16px;
+  backdrop-filter:blur(10px);
+}
+.vip-messages::-webkit-scrollbar{width:3px;}
+.vip-messages::-webkit-scrollbar-thumb{background:var(--gold);}
+
+.vip-msg{
+  display:flex;flex-direction:column;gap:3px;
+  animation:msgAppear .4s ease;
+}
+@keyframes msgAppear{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.vip-msg-name{
+  font-size:.58rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.vip-msg-text{
+  font-size:.78rem;color:rgba(255,240,200,.7);line-height:1.6;
+  background:rgba(30,15,0,.5);padding:8px 12px;border-radius:6px;
+  border:1px solid rgba(212,168,83,.08);
+}
+.vip-msg-time{font-size:.46rem;color:rgba(212,168,83,.25);letter-spacing:1px;}
+
+/* VIP INPUT */
+.vip-input-row{display:flex;gap:10px;}
+.vip-name-input,.vip-msg-input{
+  background:rgba(30,15,0,.7);
+  border:1px solid rgba(212,168,83,.2);
+  border-radius:6px;color:#fff;
+  padding:12px 16px;font-family:'Montserrat',sans-serif;
+  font-size:.72rem;outline:none;
+  transition:border-color .3s;
+  backdrop-filter:blur(10px);
+}
+.vip-name-input{width:130px;flex-shrink:0;}
+.vip-msg-input{flex:1;resize:none;}
+.vip-name-input:focus,.vip-msg-input:focus{border-color:var(--gold);}
+.vip-name-input::placeholder,.vip-msg-input::placeholder{color:rgba(212,168,83,.2);}
+.vip-send-btn{
+  background:linear-gradient(135deg,#c9a020,#f0d060);
+  color:#1a0800;border:none;padding:12px 20px;
+  font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap;
+}
+.vip-send-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,83,.3);}
+
+/* ══ LIVE SECTION ══ */
+.live-section{position:relative;z-index:10;padding:52px 48px;}
+.live-card{
+  max-width:800px;margin:0 auto;
+  background:var(--black2);border:1px solid rgba(255,26,108,.15);
+  border-radius:8px;overflow:hidden;
+}
+.live-status{
+  padding:18px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,26,108,.1);
+  flex-wrap:wrap;gap:12px;
+}
+.live-indicator{display:flex;align-items:center;gap:8px;}
+.live-dot-big{width:10px;height:10px;border-radius:50%;background:#ff4444;
+  box-shadow:0 0 10px #ff4444;animation:blink .8s infinite;}
+.live-title-text{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;}
+.live-offline{font-size:.6rem;letter-spacing:3px;color:rgba(255,255,255,.3);text-transform:uppercase;}
+
+.live-screen{
+  aspect-ratio:16/9;
+  background:linear-gradient(135deg,var(--black3),var(--black4));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  position:relative;overflow:hidden;
+}
+.live-screen::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(255,26,108,.06),transparent 70%);
+}
+.live-pulse{
+  width:80px;height:80px;border-radius:50%;
+  border:2px solid rgba(255,26,108,.3);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.live-pulse::before,.live-pulse::after{
+  content:'';position:absolute;inset:-10px;
+  border-radius:50%;border:1px solid rgba(255,26,108,.2);
+  animation:livePulse 2s ease-out infinite;
+}
+.live-pulse::after{animation-delay:1s;}
+@keyframes livePulse{0%{transform:scale(1);opacity:.5;}100%{transform:scale(1.4);opacity:0;}}
+.live-pulse svg{width:32px;height:32px;color:rgba(255,26,108,.4);}
+.live-offline-text{font-family:'Playfair Display',serif;font-size:1.2rem;color:rgba(255,255,255,.3);}
+.live-offline-sub{font-size:.6rem;color:rgba(255,255,255,.15);letter-spacing:3px;text-transform:uppercase;}
+.live-notify-btn{
+  padding:12px 28px;background:rgba(255,26,108,.1);
+  border:1px solid rgba(255,26,108,.3);border-radius:4px;
+  color:var(--pink2);font-family:'Montserrat',sans-serif;
+  font-size:.65rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;
+}
+.live-notify-btn:hover{background:rgba(255,26,108,.2);border-color:var(--pink);}
+
+/* ══ SOCIALS ══ */
 .socials-sec{position:relative;z-index:10;padding:36px 48px 52px;
   display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
 .soc-btn{display:flex;align-items:center;gap:11px;padding:16px 36px;
@@ -240,14 +544,17 @@ footer{position:relative;z-index:10;
 
 @keyframes fU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fD{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
 @media(max-width:768px){
   nav{padding:12px 16px;}.nav-pill span{display:none;}
-  .sec-head,.videos-grid,.socials-sec,footer{padding-left:16px;padding-right:16px;}
+  .sec-head,.videos-grid,.chat-section,.live-section,.socials-sec,footer{padding-left:16px;padding-right:16px;}
   .hero-title,.hero-title2{font-size:clamp(3rem,14vw,6rem);}
   .stats-bar{grid-template-columns:1fr 1fr;}
   .videos-grid{grid-template-columns:1fr;}
-  .cmt-input-row{flex-direction:column;}
-  .cmt-name{width:100%;}
+  .butt-btn{left:10px;}
+  .float-menu{left:74px;}
+  .vip-input-row{flex-wrap:wrap;}
+  .vip-name-input{width:100%;}
 }
 </style>
 </head>
@@ -255,36 +562,81 @@ footer{position:relative;z-index:10;
 <div class="grain"></div>
 <canvas id="lq"></canvas>
 
+<!-- ══ NAV ══ -->
 <nav>
   <a class="nav-logo" href="#">
-    <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
-      <ellipse cx="12" cy="20" rx="10" ry="11" fill="#ff1a6c" opacity="0.9"/>
-      <ellipse cx="24" cy="20" rx="10" ry="11" fill="#ff5fa0" opacity="0.9"/>
-      <path d="M18 10 Q17 18 18 28" stroke="#9b0040" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
-      <path d="M18 9 Q20 4 24 3" stroke="#2d8a3e" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-      <ellipse cx="23" cy="4.5" rx="3" ry="1.5" fill="#3aac52" transform="rotate(-30 23 4.5)"/>
-      <ellipse cx="10" cy="16" rx="3" ry="4" fill="white" opacity="0.12" transform="rotate(-15 10 16)"/>
+    <svg width="34" height="34" viewBox="0 0 52 52" fill="none">
+      <ellipse cx="18" cy="30" rx="14" ry="16" fill="#ff1a6c" opacity="0.9"/>
+      <ellipse cx="34" cy="30" rx="14" ry="16" fill="#ff5fa0" opacity="0.9"/>
+      <path d="M26 14 Q24.5 26 26 40" stroke="#9b0040" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      <path d="M26 13 Q29 6 34 4" stroke="#2d8a3e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <ellipse cx="33" cy="5.5" rx="4" ry="2" fill="#3aac52" transform="rotate(-30 33 5.5)"/>
     </svg>
     <div class="logo-text">Bottom <span>Girl</span></div>
   </a>
   <div class="nav-right">
+    <!-- BUTT MENU BUTTON — permanently in nav -->
+    <div class="nav-menu-wrap">
+      <div class="butt-btn" id="buttBtn" onclick="toggleMenu()">
+        <svg class="butt-svg" viewBox="0 0 52 52" fill="none">
+          <ellipse cx="18" cy="30" rx="14" ry="16" fill="#ff1a6c" opacity="0.92"/>
+          <ellipse cx="34" cy="30" rx="14" ry="16" fill="#ff5fa0" opacity="0.92"/>
+          <path d="M26 14 Q24.5 26 26 40" stroke="#9b0040" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          <path d="M26 13 Q29 6 34 4" stroke="#2d8a3e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <ellipse cx="33" cy="5.5" rx="4" ry="2" fill="#3aac52" transform="rotate(-30 33 5.5)"/>
+          <ellipse cx="14" cy="24" rx="4" ry="6" fill="white" opacity="0.14" transform="rotate(-15 14 24)"/>
+        </svg>
+        <span class="butt-btn-text">Menu</span>
+        <span class="butt-chevron">▾</span>
+      </div>
+      <!-- DROPDOWN MENU -->
+      <div class="float-menu" id="floatMenu">
+        <div class="menu-item" onclick="scrollTo('videos');closeMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+          Videos
+        </div>
+        <div class="menu-item" onclick="scrollTo('chat');closeMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Public Chat
+        </div>
+        <div class="menu-item" onclick="openVIP();closeMenu()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          👑 VIP Room
+        </div>
+        <div class="menu-item" onclick="scrollTo('live');closeMenu()">
+          <div class="live-dot" style="width:6px;height:6px;border-radius:50%;background:#ff4444;animation:blink .8s infinite;flex-shrink:0;"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49m11.31-2.82a10 10 0 010 14.14m-14.14 0a10 10 0 010-14.14"/></svg>
+          🔴 Go Live
+        </div>
+        <div class="menu-divider" style="height:1px;background:rgba(255,26,108,.1);margin:4px 8px;"></div>
+        <div class="menu-item" onclick="window.open('https://onlyfans.com/u355085640','_blank');closeMenu()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
+          OnlyFans
+        </div>
+        <div class="menu-item" onclick="window.open('https://twitter.com/l_sreejith87497','_blank');closeMenu()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.849L2.25 2.25h6.928l4.279 5.658 5.787-5.658Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Follow on X
+        </div>
+      </div>
+    </div>
+
     <div class="visitor-badge">
       <div class="dot"></div>
       <span class="visitor-num" id="visitorNum">...</span>
       <span>today</span>
     </div>
-    <a class="nav-pill" href="https://twitter.com/l_sreejith87497" target="_blank">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.849L2.25 2.25h6.928l4.279 5.658 5.787-5.658Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      <span>X</span>
-    </a>
-    <a class="nav-pill" href="https://onlyfans.com/u355085640" target="_blank">
-      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
-      <span>OnlyFans</span>
-    </a>
   </div>
 </nav>
 
+<!-- ══ HERO ══ -->
 <section class="hero">
+  <!-- Transparent tiny videos in background -->
+  <div class="hero-videos-bg">
+    <iframe src="https://drive.google.com/file/d/1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn/preview"
+      allow="autoplay" tabindex="-1"></iframe>
+    <iframe src="https://drive.google.com/file/d/1DmPpdjQbXktkSI1QapIgbcHHxFATdup4/preview"
+      allow="autoplay" tabindex="-1"></iframe>
+  </div>
   <div class="hero-bg" style="background-image:url('https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w1200-h800')"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -303,30 +655,20 @@ footer{position:relative;z-index:10;
   <div class="hero-scroll"><div class="hero-scroll-line"></div><span>SCROLL</span></div>
 </section>
 
+<!-- ══ AD ══ -->
 <div class="ad-bar">
   <div class="ad-lbl">Advertisement</div>
-  <!-- PASTE GOOGLE ADSENSE 728x90 CODE HERE -->
+  <!-- PASTE GOOGLE ADSENSE CODE HERE -->
 </div>
 
-<!-- REAL VISITOR STATS -->
+<!-- ══ STATS ══ -->
 <div class="stats-bar" id="statsBar">
-  <div class="stat-box">
-    <div class="stat-num" id="todayCount">...</div>
-    <div class="stat-label">Visitors Today</div>
-    <div class="stat-sub" id="todayDate">—</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-num" id="yesterdayCount">...</div>
-    <div class="stat-label">Yesterday</div>
-    <div class="stat-sub">Previous Day</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-num" id="totalCount">...</div>
-    <div class="stat-label">All Time</div>
-    <div class="stat-sub">Total Visitors</div>
-  </div>
+  <div class="stat-box"><div class="stat-num" id="todayCount">...</div><div class="stat-label">Visitors Today</div><div class="stat-sub" id="todayDate">—</div></div>
+  <div class="stat-box"><div class="stat-num" id="yesterdayCount">...</div><div class="stat-label">Yesterday</div><div class="stat-sub">Previous Day</div></div>
+  <div class="stat-box"><div class="stat-num" id="totalCount">...</div><div class="stat-label">All Time</div><div class="stat-sub">Total Visitors</div></div>
 </div>
 
+<!-- ══ VIDEOS ══ -->
 <section class="section" id="videos">
   <div class="sec-head">
     <div class="sec-label">Exclusive Content</div>
@@ -334,24 +676,16 @@ footer{position:relative;z-index:10;
     <p class="sec-sub">Tap any video to play instantly</p>
   </div>
   <div class="videos-grid">
-
     <!-- VIDEO 1 -->
     <div class="video-card" id="vc1">
       <div class="vc-thumb" id="vt1" onclick="playVideo(1)">
-        <img src="https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w800-h450"
-          alt="Bottomgirl Exclusive"
+        <img src="https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w800-h450" alt="Bottomgirl Exclusive"
           onerror="this.style.display='none';document.getElementById('vph1').style.display='flex'">
         <div class="vc-thumb-ph" id="vph1" style="display:none;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2">
-            <path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
-          </svg>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
         </div>
-        <div class="vc-play-ov">
-          <div class="vc-play-circle">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-        </div>
-        <div class="vc-live"><div class="vc-live-dot"></div>EXCLUSIVE</div>
+        <div class="vc-play-ov"><div class="vc-play-circle"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="vc-live-tag"><div class="vc-live-dot"></div>EXCLUSIVE</div>
       </div>
       <div class="vc-player" id="vp1">
         <button class="vc-close" onclick="closeVideo(1)">✕</button>
@@ -359,40 +693,21 @@ footer{position:relative;z-index:10;
       </div>
       <div class="vc-info">
         <div class="vc-title">Bottomgirl Exclusive</div>
-        <div class="vc-meta">
-          <span class="vc-badge vc-badge-new">New</span>
-          <span class="vc-dur">⏱ 4 sec</span>
-        </div>
+        <div class="vc-meta"><span class="vc-badge vc-badge-new">New</span><span class="vc-dur">⏱ 4 sec</span></div>
         <a class="vc-of" href="https://onlyfans.com/u355085640" target="_blank">
           <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
           More on OnlyFans
         </a>
       </div>
-      <div class="vc-cmts">
-        <div class="vc-cmts-title">Comments <span class="vc-cmt-count" id="cc1"></span></div>
-        <div class="cmt-input-row">
-          <input class="cmt-name" type="text" id="cn1" placeholder="Your name" maxlength="28">
-          <textarea class="cmt-text" id="ct1" placeholder="Write a comment..." rows="2" maxlength="280"></textarea>
-          <button class="cmt-post" onclick="postCmt('hc1','cn1','ct1','cl1','cc1')">Post</button>
-        </div>
-        <div class="cmt-list" id="cl1"><div class="cmt-empty">No comments yet.</div></div>
-      </div>
     </div>
-
     <!-- VIDEO 2 -->
     <div class="video-card" id="vc2">
       <div class="vc-thumb" id="vt2" onclick="playVideo(2)">
         <div class="vc-thumb-ph">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2">
-            <path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
-          </svg>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
         </div>
-        <div class="vc-play-ov">
-          <div class="vc-play-circle">
-            <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-        </div>
-        <div class="vc-live"><div class="vc-live-dot"></div>EXCLUSIVE</div>
+        <div class="vc-play-ov"><div class="vc-play-circle"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="vc-live-tag"><div class="vc-live-dot"></div>EXCLUSIVE</div>
       </div>
       <div class="vc-player" id="vp2">
         <button class="vc-close" onclick="closeVideo(2)">✕</button>
@@ -400,34 +715,69 @@ footer{position:relative;z-index:10;
       </div>
       <div class="vc-info">
         <div class="vc-title">Wanna Make My Pussy Wet</div>
-        <div class="vc-meta">
-          <span class="vc-badge vc-badge-exc">⭐ Exclusive</span>
-          <span class="vc-dur">⏱ 2:44</span>
-        </div>
+        <div class="vc-meta"><span class="vc-badge vc-badge-exc">⭐ Exclusive</span><span class="vc-dur">⏱ 2:44</span></div>
         <a class="vc-of" href="https://onlyfans.com/u355085640" target="_blank">
           <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
           More on OnlyFans
         </a>
       </div>
-      <div class="vc-cmts">
-        <div class="vc-cmts-title">Comments <span class="vc-cmt-count" id="cc2"></span></div>
-        <div class="cmt-input-row">
-          <input class="cmt-name" type="text" id="cn2" placeholder="Your name" maxlength="28">
-          <textarea class="cmt-text" id="ct2" placeholder="Write a comment..." rows="2" maxlength="280"></textarea>
-          <button class="cmt-post" onclick="postCmt('hc2','cn2','ct2','cl2','cc2')">Post</button>
-        </div>
-        <div class="cmt-list" id="cl2"><div class="cmt-empty">No comments yet.</div></div>
-      </div>
     </div>
-
   </div>
 </section>
 
-<div class="ad-bar" style="margin-top:20px;">
-  <div class="ad-lbl">Advertisement</div>
-  <!-- PASTE GOOGLE ADSENSE 300x250 CODE HERE -->
-</div>
+<!-- ══ AD MID ══ -->
+<div class="ad-bar"><div class="ad-lbl">Advertisement</div></div>
 
+<!-- ══ PUBLIC CHAT ══ -->
+<section class="chat-section" id="chat">
+  <div class="sec-head" style="padding:0;margin-bottom:24px;">
+    <div class="sec-label">Live Chat</div>
+    <h2 class="sec-title">Public <em>Chat Room</em></h2>
+    <p class="sec-sub">Chat with everyone · Real time · Click the chat bubble below 💬</p>
+  </div>
+  <div class="chat-box">
+    <div class="chat-header">
+      <div class="chat-header-dot"></div>
+      <div class="chat-header-title">Bottom Girl — Public Chat</div>
+      <div class="chat-header-sub">Powered by Tawk.to · Real Time</div>
+    </div>
+    <div class="tawk-container">
+      Chat widget loads in the bottom right corner →
+    </div>
+  </div>
+</section>
+
+<!-- ══ LIVE SECTION ══ -->
+<section class="live-section" id="live">
+  <div class="sec-head" style="padding:0;margin-bottom:24px;">
+    <div class="sec-label">🔴 Live Stream</div>
+    <h2 class="sec-title">Go <em>Live</em></h2>
+    <p class="sec-sub">Watch Bottom Girl live · Get notified when she goes live</p>
+  </div>
+  <div class="live-card">
+    <div class="live-status">
+      <div class="live-indicator">
+        <div class="live-dot-big"></div>
+        <div class="live-title-text">Bottom Girl Live</div>
+      </div>
+      <div class="live-offline">Currently Offline</div>
+    </div>
+    <div class="live-screen">
+      <div class="live-pulse">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49m11.31-2.82a10 10 0 010 14.14m-14.14 0a10 10 0 010-14.14"/>
+        </svg>
+      </div>
+      <div class="live-offline-text">Stream Coming Soon</div>
+      <div class="live-offline-sub">Follow on X & OnlyFans for updates</div>
+      <button class="live-notify-btn" onclick="showToast('🔔 You will be notified when live starts!')">
+        🔔 &nbsp;Notify Me When Live
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOCIALS ══ -->
 <div class="socials-sec">
   <a class="soc-btn soc-of" href="https://onlyfans.com/u355085640" target="_blank">
     <svg class="soc-ico" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
@@ -441,25 +791,84 @@ footer{position:relative;z-index:10;
 
 <footer>
   <div class="ft-logo">
-    <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
-      <ellipse cx="12" cy="20" rx="10" ry="11" fill="#ff1a6c" opacity="0.7"/>
-      <ellipse cx="24" cy="20" rx="10" ry="11" fill="#ff5fa0" opacity="0.7"/>
-      <path d="M18 10 Q17 18 18 28" stroke="#9b0040" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-      <path d="M18 9 Q20 4 24 3" stroke="#2d8a3e" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-      <ellipse cx="23" cy="4.5" rx="3" ry="1.5" fill="#3aac52" transform="rotate(-30 23 4.5)"/>
+    <svg width="20" height="20" viewBox="0 0 52 52" fill="none">
+      <ellipse cx="18" cy="30" rx="14" ry="16" fill="#ff1a6c" opacity="0.7"/>
+      <ellipse cx="34" cy="30" rx="14" ry="16" fill="#ff5fa0" opacity="0.7"/>
+      <path d="M26 14 Q24.5 26 26 40" stroke="#9b0040" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
     </svg>
     Bottom Girl
   </div>
   <div class="ft-copy">© 2025 · All Rights Reserved · 18+ Only</div>
 </footer>
 
+<!-- ══ VIP ROOM OVERLAY ══ -->
+<div class="vip-overlay" id="vipOverlay">
+  <div class="vip-bg" id="vipBg"></div>
+  <div class="vip-curtain-l"></div>
+  <div class="vip-curtain-r"></div>
+  <button class="vip-close" onclick="closeVIP()">✕</button>
+
+  <!-- PASSWORD SCREEN -->
+  <div class="vip-pw-screen" id="vipPwScreen">
+    <div class="vip-crown">👑</div>
+    <div class="vip-pw-title">VIP Room</div>
+    <div class="vip-pw-sub">Exclusive · Private · Members Only</div>
+    <input class="vip-pw-input" type="password" id="vipPwInput"
+      placeholder="Enter VIP Password"
+      onkeydown="if(event.key==='Enter')checkVipPw()">
+    <div class="vip-pw-err" id="vipPwErr">✕ Incorrect password</div>
+    <button class="btn-vip-enter" onclick="checkVipPw()">✦ &nbsp;Enter The Room</button>
+  </div>
+
+  <!-- VIP ROOM INTERIOR -->
+  <div class="vip-room" id="vipRoom">
+    <div class="vip-room-header">
+      <div class="vip-room-title">
+        👑 VIP Private Room
+      </div>
+      <div style="font-size:.55rem;letter-spacing:3px;color:rgba(212,168,83,.4);text-transform:uppercase;">
+        Members Only
+      </div>
+    </div>
+    <div class="vip-messages" id="vipMessages">
+      <div class="vip-msg">
+        <div class="vip-msg-name">Bottom Girl 👑</div>
+        <div class="vip-msg-text">Welcome to my VIP room! 🖤 This is our private space. Say hello!</div>
+        <div class="vip-msg-time">just now</div>
+      </div>
+    </div>
+    <div class="vip-input-row">
+      <input class="vip-name-input" type="text" id="vipName" placeholder="Your name" maxlength="20">
+      <input class="vip-msg-input" type="text" id="vipMsgInput" placeholder="Type a message..." maxlength="200"
+        onkeydown="if(event.key==='Enter')sendVipMsg()">
+      <button class="vip-send-btn" onclick="sendVipMsg()">Send ✦</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+
+<!-- ══ TAWK.TO LIVE CHAT ══ -->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69c01ae8efc5d11c3692aa9a/1jkb6i7o3';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Bottom Girl","description":"Adult content creator.","sameAs":["https://twitter.com/l_sreejith87497","https://onlyfans.com/u355085640"]}
 </script>
 
 <script>
+// VIP PASSWORD
+const VIP_PW = 'vvip2026';
+
 // LIQUID BG
 const cv=document.getElementById('lq'),cx=cv.getContext('2d');
 let W,H,blobs=[],T=0;
@@ -469,165 +878,169 @@ const mkB=i=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:
 for(let i=0;i<10;i++)blobs.push(mkB(i));
 (function loop(){cx.clearRect(0,0,W,H);T+=.003;blobs.forEach(b=>{b.x+=b.vx+Math.sin(T*b.sp*60+b.ph)*.5;b.y+=b.vy+Math.cos(T*b.sp*40+b.ph)*.4;if(b.x<-b.r)b.x=W+b.r;if(b.x>W+b.r)b.x=-b.r;if(b.y<-b.r)b.y=H+b.r;if(b.y>H+b.r)b.y=-b.r;const p=b.r+Math.sin(T*b.sp*80+b.ph)*28;const g=cx.createRadialGradient(b.x,b.y,0,b.x,b.y,p);g.addColorStop(0,b.c+'aa');g.addColorStop(.4,b.c+'33');g.addColorStop(1,b.c+'00');cx.fillStyle=g;cx.beginPath();cx.arc(b.x,b.y,p,0,Math.PI*2);cx.fill();});requestAnimationFrame(loop);})();
 
+// SCROLL REVEAL
 const io=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('in'),i*80);});},{threshold:.07});
 document.querySelectorAll('.stat-box,.video-card').forEach(el=>io.observe(el));
 
-// ══════════════════════════════════════════════════
-// REAL VISITOR COUNTER
-// Uses CountAPI — a free real counter service
-// Counts REAL visitors from ALL devices globally
-// Resets every 24 hours automatically
-// Refreshing does NOT increase the count
-// because we check sessionStorage first
-// ══════════════════════════════════════════════════
-const SITE_KEY = 'bottomgirl-official-2025';
+// NAV MENU
+let menuOpen=false;
+function toggleMenu(){
+  menuOpen=!menuOpen;
+  document.getElementById('floatMenu').classList.toggle('open',menuOpen);
+  document.getElementById('buttBtn').classList.toggle('open',menuOpen);
+}
+function closeMenu(){
+  menuOpen=false;
+  document.getElementById('floatMenu').classList.remove('open');
+  document.getElementById('buttBtn').classList.remove('open');
+}
+// Close menu when clicking outside
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.nav-menu-wrap'))closeMenu();
+});
+function scrollTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
 
+// VISITOR COUNTER
+const SITE_KEY='bottomgirl-official-2025';
 async function loadVisitorStats(){
-  const today = new Date().toISOString().split('T')[0]; // e.g. 2025-03-20
-  const yesterday = new Date(Date.now()-86400000).toISOString().split('T')[0];
-
-  // Check if this session already counted today
-  // So refreshing the page does NOT increase count
-  const sessionKey = 'bg_session_' + today;
-  const alreadyCounted = sessionStorage.getItem(sessionKey);
-
+  const today=new Date().toISOString().split('T')[0];
+  const yesterday=new Date(Date.now()-86400000).toISOString().split('T')[0];
+  const sessionKey='bg_session_'+today;
+  const alreadyCounted=sessionStorage.getItem(sessionKey);
   try{
-    // Always fetch current counts to display
-    // Only increment if this is a new session today
     if(!alreadyCounted){
-      // New visitor today — hit the counter
-      const hitRes = await fetch(
-        `https://api.countapi.xyz/hit/${SITE_KEY}/${today}`
-      );
-      const hitData = await hitRes.json();
-      // Mark this session as counted
+      const r=await fetch(`https://api.countapi.xyz/hit/${SITE_KEY}/${today}`);
+      const d=await r.json();
       sessionStorage.setItem(sessionKey,'1');
-      document.getElementById('todayCount').textContent = hitData.value.toLocaleString();
-      document.getElementById('visitorNum').textContent = hitData.value.toLocaleString();
-    } else {
-      // Already counted — just fetch without incrementing
-      const getRes = await fetch(
-        `https://api.countapi.xyz/get/${SITE_KEY}/${today}`
-      );
-      const getData = await getRes.json();
-      const val = getData.value || 0;
-      document.getElementById('todayCount').textContent = val.toLocaleString();
-      document.getElementById('visitorNum').textContent = val.toLocaleString();
+      document.getElementById('todayCount').textContent=d.value.toLocaleString();
+      document.getElementById('visitorNum').textContent=d.value.toLocaleString();
+      await fetch(`https://api.countapi.xyz/hit/${SITE_KEY}/alltime`);
+    }else{
+      const r=await fetch(`https://api.countapi.xyz/get/${SITE_KEY}/${today}`);
+      const d=await r.json();
+      document.getElementById('todayCount').textContent=(d.value||0).toLocaleString();
+      document.getElementById('visitorNum').textContent=(d.value||0).toLocaleString();
     }
-
-    // Get yesterday count
-    try{
-      const yRes = await fetch(
-        `https://api.countapi.xyz/get/${SITE_KEY}/${yesterday}`
-      );
-      const yData = await yRes.json();
-      document.getElementById('yesterdayCount').textContent = (yData.value||0).toLocaleString();
-    }catch(e){
-      document.getElementById('yesterdayCount').textContent = '0';
-    }
-
-    // Get all time total
-    try{
-      const totalRes = await fetch(
-        `https://api.countapi.xyz/get/${SITE_KEY}/alltime`
-      );
-      const totalData = await totalRes.json();
-
-      // If new visitor, also increment alltime
-      if(!alreadyCounted){
-        await fetch(`https://api.countapi.xyz/hit/${SITE_KEY}/alltime`);
-        document.getElementById('totalCount').textContent = ((totalData.value||0)+1).toLocaleString();
-      } else {
-        document.getElementById('totalCount').textContent = (totalData.value||0).toLocaleString();
-      }
-    }catch(e){
-      document.getElementById('totalCount').textContent = '—';
-    }
-
-    // Show today's date
-    const d = new Date();
-    const dateStr = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-    document.getElementById('todayDate').textContent = dateStr;
-
+    try{const r=await fetch(`https://api.countapi.xyz/get/${SITE_KEY}/${yesterday}`);const d=await r.json();document.getElementById('yesterdayCount').textContent=(d.value||0).toLocaleString();}catch(e){document.getElementById('yesterdayCount').textContent='0';}
+    try{const r=await fetch(`https://api.countapi.xyz/get/${SITE_KEY}/alltime`);const d=await r.json();document.getElementById('totalCount').textContent=(d.value||0).toLocaleString();}catch(e){document.getElementById('totalCount').textContent='—';}
+    const d2=new Date();document.getElementById('todayDate').textContent=d2.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   }catch(err){
-    // If CountAPI fails, fallback gracefully
-    console.log('Counter unavailable');
-    document.getElementById('todayCount').textContent = '—';
-    document.getElementById('yesterdayCount').textContent = '—';
-    document.getElementById('totalCount').textContent = '—';
-    document.getElementById('visitorNum').textContent = '—';
+    document.getElementById('todayCount').textContent='—';
+    document.getElementById('yesterdayCount').textContent='—';
+    document.getElementById('totalCount').textContent='—';
+    document.getElementById('visitorNum').textContent='—';
   }
 }
 
-// VIDEO IDs
-const VIDEO_IDS={
-  1:'1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn',
-  2:'1DmPpdjQbXktkSI1QapIgbcHHxFATdup4'
-};
-
+// VIDEOS
+const VIDEO_IDS={1:'1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn',2:'1DmPpdjQbXktkSI1QapIgbcHHxFATdup4'};
 function playVideo(n){
-  const thumb=document.getElementById('vt'+n);
-  const player=document.getElementById('vp'+n);
-  const iframe=document.getElementById('if'+n);
-  iframe.src=`https://drive.google.com/file/d/${VIDEO_IDS[n]}/preview`;
-  thumb.style.display='none';
-  player.classList.add('active');
+  document.getElementById('vt'+n).style.display='none';
+  const p=document.getElementById('vp'+n);
+  p.classList.add('active');
+  document.getElementById('if'+n).src=`https://drive.google.com/file/d/${VIDEO_IDS[n]}/preview`;
 }
 function closeVideo(n){
-  const thumb=document.getElementById('vt'+n);
-  const player=document.getElementById('vp'+n);
-  const iframe=document.getElementById('if'+n);
-  iframe.src='';
-  player.classList.remove('active');
-  thumb.style.display='block';
+  document.getElementById('vt'+n).style.display='block';
+  document.getElementById('vp'+n).classList.remove('active');
+  document.getElementById('if'+n).src='';
 }
 
-// COMMENTS
-let comments=JSON.parse(localStorage.getItem('bg_cmts')||'{}');
-function saveCmts(){localStorage.setItem('bg_cmts',JSON.stringify(comments));}
+// VIP ROOM
+function openVIP(){
+  document.getElementById('vipOverlay').classList.add('open');
+  document.getElementById('vipPwScreen').classList.remove('hidden');
+  document.getElementById('vipRoom').classList.remove('open');
+  document.getElementById('vipPwInput').value='';
+  document.getElementById('vipPwErr').style.display='none';
+  createParticles();
+}
+function closeVIP(){
+  document.getElementById('vipOverlay').classList.remove('open');
+}
+function checkVipPw(){
+  const val=document.getElementById('vipPwInput').value;
+  if(val===VIP_PW){
+    document.getElementById('vipPwScreen').classList.add('hidden');
+    document.getElementById('vipRoom').classList.add('open');
+    showToast('👑 Welcome to the VIP Room!');
+  }else{
+    document.getElementById('vipPwErr').style.display='block';
+    document.getElementById('vipPwInput').value='';
+    document.getElementById('vipPwInput').focus();
+  }
+}
+
+// VIP GOLD PARTICLES
+function createParticles(){
+  const bg=document.getElementById('vipBg');
+  // Remove old particles
+  bg.querySelectorAll('.vip-particle').forEach(p=>p.remove());
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');
+    p.className='vip-particle';
+    const size=Math.random()*6+2;
+    p.style.cssText=`
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*8+4}s;
+      animation-delay:${Math.random()*4}s;
+    `;
+    bg.appendChild(p);
+  }
+}
+
+// VIP CHAT — localStorage so messages persist per session
+let vipMsgs=JSON.parse(sessionStorage.getItem('vip_msgs')||'[]');
+function renderVipMsgs(){
+  const container=document.getElementById('vipMessages');
+  // Keep welcome message + user messages
+  const welcome=container.querySelector('.vip-msg');
+  container.innerHTML='';
+  if(welcome)container.appendChild(welcome);
+  vipMsgs.forEach(m=>{
+    const div=document.createElement('div');
+    div.className='vip-msg';
+    div.innerHTML=`
+      <div class="vip-msg-name">${m.name}</div>
+      <div class="vip-msg-text">${m.text}</div>
+      <div class="vip-msg-time">${timeAgo(m.ts)}</div>
+    `;
+    container.appendChild(div);
+  });
+  container.scrollTop=container.scrollHeight;
+}
+function sendVipMsg(){
+  const name=document.getElementById('vipName').value.trim();
+  const text=document.getElementById('vipMsgInput').value.trim();
+  if(!name){showToast('Enter your name');return;}
+  if(!text){showToast('Type a message');return;}
+  vipMsgs.push({name,text,ts:Date.now()});
+  sessionStorage.setItem('vip_msgs',JSON.stringify(vipMsgs));
+  document.getElementById('vipMsgInput').value='';
+  renderVipMsgs();
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeVIP();
+});
+
 function timeAgo(ts){
   const s=Math.floor((Date.now()-ts)/1000);
   if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';
-  if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';
+  return Math.floor(s/3600)+'h ago';
 }
-function renderCmts(vid,listId,countId){
-  const list=document.getElementById(listId);
-  const count=document.getElementById(countId);
-  const all=(comments[vid]||[]).filter(c=>!c.hidden);
-  count.textContent=all.length?`(${all.length})`:'';
-  if(!all.length){list.innerHTML='<div class="cmt-empty">No comments yet.</div>';return;}
-  list.innerHTML=all.map(c=>`
-    <div class="cmt-item">
-      <div class="cmt-author">${c.name}</div>
-      <div class="cmt-body">${c.text}</div>
-      <div class="cmt-time">${timeAgo(c.ts)}</div>
-    </div>`).join('');
-}
-function postCmt(vid,nameId,textId,listId,countId){
-  const name=document.getElementById(nameId).value.trim();
-  const text=document.getElementById(textId).value.trim();
-  if(!name){showToast('Enter your name');return;}
-  if(!text){showToast('Write a comment');return;}
-  if(!comments[vid])comments[vid]=[];
-  comments[vid].push({name,text,ts:Date.now(),hidden:false});
-  saveCmts();
-  document.getElementById(nameId).value='';
-  document.getElementById(textId).value='';
-  renderCmts(vid,listId,countId);
-  showToast('Comment posted!');
-}
-
-window.addEventListener('DOMContentLoaded',()=>{
-  loadVisitorStats();
-  renderCmts('hc1','cl1','cc1');
-  renderCmts('hc2','cl2','cc2');
-});
 
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('on');
   setTimeout(()=>t.classList.remove('on'),2500);
 }
+
+window.addEventListener('DOMContentLoaded',()=>{
+  loadVisitorStats();
+});
 </script>
 </body>
 </html>
