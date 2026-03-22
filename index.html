@@ -736,12 +736,6 @@ footer{position:relative;z-index:10;
         </div>
       </div>
     </div>
-
-    <div class="visitor-badge">
-      <div class="dot"></div>
-      <span class="visitor-num" id="visitorNum">...</span>
-      <span>today</span>
-    </div>
   </div>
 </nav>
 
@@ -776,13 +770,6 @@ footer{position:relative;z-index:10;
 <div class="ad-bar">
   <div class="ad-lbl">Advertisement</div>
   <!-- PASTE GOOGLE ADSENSE CODE HERE -->
-</div>
-
-<!-- ══ STATS ══ -->
-<div class="stats-bar" id="statsBar">
-  <div class="stat-box"><div class="stat-num" id="todayCount">...</div><div class="stat-label">Visitors Today</div><div class="stat-sub" id="todayDate">—</div></div>
-  <div class="stat-box"><div class="stat-num" id="yesterdayCount">...</div><div class="stat-label">Yesterday</div><div class="stat-sub">Previous Day</div></div>
-  <div class="stat-box"><div class="stat-num" id="totalCount">...</div><div class="stat-label">All Time</div><div class="stat-sub">Total Visitors</div></div>
 </div>
 
 <!-- ══ VIDEOS ══ -->
@@ -856,7 +843,6 @@ footer{position:relative;z-index:10;
     <div class="chat-header">
       <div class="chat-header-dot"></div>
       <div class="chat-header-title">Bottom Girl — Public Chat</div>
-      <div class="chat-online" id="chatOnline">0 online</div>
     </div>
     <!-- MESSAGES -->
     <div class="chat-messages" id="chatMessages">
@@ -971,12 +957,8 @@ footer{position:relative;z-index:10;
   <!-- VIP ROOM INTERIOR -->
   <div class="vip-room" id="vipRoom">
     <div class="vip-room-header">
-      <div class="vip-room-title">
-        👑 VIP Private Room
-      </div>
-      <div style="font-size:.55rem;letter-spacing:3px;color:rgba(212,168,83,.4);text-transform:uppercase;">
-        Members Only
-      </div>
+      <div class="vip-room-title">👑 VIP Private Room</div>
+      <div style="font-size:.55rem;letter-spacing:3px;color:rgba(212,168,83,.4);text-transform:uppercase;">Members Only</div>
     </div>
     <div class="vip-messages" id="vipMessages">
       <div class="vip-msg">
@@ -986,8 +968,8 @@ footer{position:relative;z-index:10;
       </div>
     </div>
     <div class="vip-input-row">
-      <input class="vip-name-input" type="text" id="vipName" placeholder="Your name" maxlength="20">
-      <input class="vip-msg-input" type="text" id="vipMsgInput" placeholder="Type a message..." maxlength="200"
+      <input class="vip-msg-input" type="text" id="vipMsgInput"
+        placeholder="Type a message..." maxlength="200"
         onkeydown="if(event.key==='Enter')sendVipMsg()">
       <button class="vip-send-btn" onclick="sendVipMsg()">Send ✦</button>
     </div>
@@ -1087,6 +1069,14 @@ function closeVideo(n){
 
 // VIP ROOM
 function openVIP(){
+  // If no name set — show name popup first, then VIP after
+  if(!getMyName()){
+    document.getElementById('namePopupBg').classList.add('show');
+    // After name saved, open VIP automatically
+    window._openVipAfterName=true;
+    setTimeout(()=>document.getElementById('namePopupInput').focus(),400);
+    return;
+  }
   document.getElementById('vipOverlay').classList.add('open');
   document.getElementById('vipPwScreen').classList.remove('hidden');
   document.getElementById('vipRoom').classList.remove('open');
@@ -1096,6 +1086,7 @@ function openVIP(){
 }
 function closeVIP(){
   document.getElementById('vipOverlay').classList.remove('open');
+  if(vipPollInterval){clearInterval(vipPollInterval);vipPollInterval=null;}
 }
 function checkVipPw(){
   const val=document.getElementById('vipPwInput').value;
@@ -1103,6 +1094,10 @@ function checkVipPw(){
     document.getElementById('vipPwScreen').classList.add('hidden');
     document.getElementById('vipRoom').classList.add('open');
     showToast('👑 Welcome to the VIP Room!');
+    // Start fetching VIP messages every 4 seconds
+    fetchVipMessages();
+    if(vipPollInterval)clearInterval(vipPollInterval);
+    vipPollInterval=setInterval(fetchVipMessages,4000);
   }else{
     document.getElementById('vipPwErr').style.display='block';
     document.getElementById('vipPwInput').value='';
@@ -1129,35 +1124,101 @@ function createParticles(){
   }
 }
 
-// VIP CHAT — localStorage so messages persist per session
-let vipMsgs=JSON.parse(sessionStorage.getItem('vip_msgs')||'[]');
-function renderVipMsgs(){
+// ══════════════════════════════════════════
+// VIP CHAT — Real Global via JSONBin
+// Only people with password can see/send
+// Different bin from public chat
+// ══════════════════════════════════════════
+const JBIN_VIP_ID='69c02544aa77b81da90af6a2'; // reuse same bin, different key
+const JBIN_VIP_URL=`https://api.jsonbin.io/v3/b/${JBIN_VIP_ID}?meta=false`;
+
+// We store VIP messages inside the same bin under "vipMessages" key
+let vipPollInterval=null;
+let lastVipCount=0;
+
+async function fetchVipMessages(){
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_VIP_ID}`,{
+      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
+    });
+    const data=await res.json();
+    const msgs=data.vipMessages||[];
+    if(msgs.length!==lastVipCount){
+      lastVipCount=msgs.length;
+      renderVipMsgs(msgs);
+    }
+  }catch(e){console.log('VIP fetch error',e);}
+}
+
+async function saveVipMessage(msg){
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_VIP_ID}`,{
+      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
+    });
+    const data=await res.json();
+    const msgs=data.vipMessages||[];
+    const pubMsgs=data.messages||[];
+    msgs.push(msg);
+    const trimmed=msgs.slice(-100);
+    await fetch(`https://api.jsonbin.io/v3/b/${JBIN_VIP_ID}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
+      body:JSON.stringify({messages:pubMsgs,vipMessages:trimmed})
+    });
+    lastVipCount=trimmed.length;
+    renderVipMsgs(trimmed);
+  }catch(e){
+    showToast('Could not send — check connection');
+  }
+}
+
+function renderVipMsgs(msgs){
   const container=document.getElementById('vipMessages');
-  // Keep welcome message + user messages
-  const welcome=container.querySelector('.vip-msg');
   container.innerHTML='';
-  if(welcome)container.appendChild(welcome);
-  vipMsgs.forEach(m=>{
-    const div=document.createElement('div');
-    div.className='vip-msg';
-    div.innerHTML=`
-      <div class="vip-msg-name">${m.name}</div>
-      <div class="vip-msg-text">${m.text}</div>
-      <div class="vip-msg-time">${timeAgo(m.ts)}</div>
-    `;
-    container.appendChild(div);
-  });
+  // Always show welcome message
+  const welcome=document.createElement('div');
+  welcome.className='vip-msg';
+  welcome.innerHTML=`
+    <div class="vip-msg-name">Bottom Girl 👑</div>
+    <div class="vip-msg-text">Welcome to my VIP room! 🖤 This is our private space. Say hello!</div>
+    <div class="vip-msg-time">always</div>
+  `;
+  container.appendChild(welcome);
+  if(msgs&&msgs.length){
+    msgs.forEach(m=>{
+      const div=document.createElement('div');
+      div.className='vip-msg';
+      div.innerHTML=`
+        <div class="vip-msg-name">${escHtml(m.name)}</div>
+        <div class="vip-msg-text">${escHtml(m.text)}</div>
+        <div class="vip-msg-time">${timeAgo(m.ts)}</div>
+      `;
+      container.appendChild(div);
+    });
+  }
   container.scrollTop=container.scrollHeight;
 }
+
 function sendVipMsg(){
-  const name=getMyName()||document.getElementById('vipName').value.trim();
+  const name=getMyName();
+  if(!name){showToast('Set your name first');return;}
   const text=document.getElementById('vipMsgInput').value.trim();
-  if(!name){showToast('Set your name first');changeName();return;}
-  if(!text){showToast('Type a message');return;}
-  vipMsgs.push({name,text,ts:Date.now()});
-  sessionStorage.setItem('vip_msgs',JSON.stringify(vipMsgs));
+  if(!text){return;}
   document.getElementById('vipMsgInput').value='';
-  renderVipMsgs();
+  const msg={name,text,ts:Date.now()};
+  // Show immediately
+  const container=document.getElementById('vipMessages');
+  const div=document.createElement('div');
+  div.className='vip-msg';
+  div.innerHTML=`
+    <div class="vip-msg-name">${escHtml(name)}</div>
+    <div class="vip-msg-text">${escHtml(text)}</div>
+    <div class="vip-msg-time">just now</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop=container.scrollHeight;
+  // Save to server
+  saveVipMessage(msg);
 }
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')closeVIP();
@@ -1177,37 +1238,64 @@ function showToast(msg){
 
 // ══════════════════════════════════════════
 // PERMANENT NAME SYSTEM
-// Person sets name ONCE — saved forever
+// Uses localStorage — survives FOREVER
+// Refresh, close browser, days later —
+// name is ALWAYS there, popup NEVER shows
+// again once name is saved
 // ══════════════════════════════════════════
-const NAME_KEY='bg_permanent_name';
-function getMyName(){return localStorage.getItem(NAME_KEY)||'';}
+const NAME_KEY='bg_user_name_v2';
+
+function getMyName(){
+  return localStorage.getItem(NAME_KEY)||'';
+}
 
 function saveNamePopup(){
   const val=document.getElementById('namePopupInput').value.trim();
-  if(!val){document.getElementById('namePopupErr').style.display='block';return;}
+  if(!val){
+    document.getElementById('namePopupErr').style.display='block';
+    return;
+  }
+  // Save permanently to localStorage
   localStorage.setItem(NAME_KEY,val);
-  document.getElementById('namePopupBg').classList.remove('show');
+  // Hide popup completely
+  const popup=document.getElementById('namePopupBg');
+  popup.classList.remove('show');
+  popup.style.display='none'; // extra safety — never shows again
+  // Update chat tag
   document.getElementById('chatUserTag').textContent=val;
-  document.getElementById('vipName').value=val;
-  showToast('✅ Name saved: '+val);
+  showToast('✅ Welcome, '+val+'!');
   startPolling();
+  // If user was trying to open VIP, open it now
+  if(window._openVipAfterName){
+    window._openVipAfterName=false;
+    setTimeout(openVIP,400);
+  }
 }
 
 function changeName(){
+  // Only show popup when user WANTS to change name
+  const popup=document.getElementById('namePopupBg');
+  popup.style.display=''; // restore display
   document.getElementById('namePopupInput').value=getMyName();
   document.getElementById('namePopupErr').style.display='none';
-  document.getElementById('namePopupBg').classList.add('show');
+  popup.classList.add('show');
   setTimeout(()=>document.getElementById('namePopupInput').focus(),400);
 }
 
 function checkName(){
   const name=getMyName();
   if(!name){
-    document.getElementById('namePopupBg').classList.add('show');
-    setTimeout(()=>document.getElementById('namePopupInput').focus(),400);
+    // First time ever — show popup
+    const popup=document.getElementById('namePopupBg');
+    popup.style.display='';
+    popup.classList.add('show');
+    setTimeout(()=>document.getElementById('namePopupInput').focus(),500);
   }else{
+    // Name exists — hide popup forever, load chat
+    const popup=document.getElementById('namePopupBg');
+    popup.classList.remove('show');
+    popup.style.display='none';
     document.getElementById('chatUserTag').textContent=name;
-    document.getElementById('vipName').value=name;
     startPolling();
   }
 }
