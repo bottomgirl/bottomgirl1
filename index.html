@@ -1175,37 +1175,25 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('on'),2500);
 }
 
-window.addEventListener('DOMContentLoaded',()=>{
-  loadVisitorStats();
-  checkName();
-});
-
 // ══════════════════════════════════════════
 // PERMANENT NAME SYSTEM
 // Person sets name ONCE — saved forever
-// Never asked again unless they change it
 // ══════════════════════════════════════════
 const NAME_KEY='bg_permanent_name';
-
 function getMyName(){return localStorage.getItem(NAME_KEY)||'';}
 
 function saveNamePopup(){
   const val=document.getElementById('namePopupInput').value.trim();
-  if(!val){
-    document.getElementById('namePopupErr').style.display='block';
-    return;
-  }
+  if(!val){document.getElementById('namePopupErr').style.display='block';return;}
   localStorage.setItem(NAME_KEY,val);
   document.getElementById('namePopupBg').classList.remove('show');
   document.getElementById('chatUserTag').textContent=val;
   document.getElementById('vipName').value=val;
   showToast('✅ Name saved: '+val);
-  loadStoredMessages();
-  startBroadcast();
+  startPolling();
 }
 
 function changeName(){
-  // Allow changing name
   document.getElementById('namePopupInput').value=getMyName();
   document.getElementById('namePopupErr').style.display='none';
   document.getElementById('namePopupBg').classList.add('show');
@@ -1215,45 +1203,86 @@ function changeName(){
 function checkName(){
   const name=getMyName();
   if(!name){
-    // First time — show popup
     document.getElementById('namePopupBg').classList.add('show');
     setTimeout(()=>document.getElementById('namePopupInput').focus(),400);
   }else{
-    // Name exists — show it and load chat
     document.getElementById('chatUserTag').textContent=name;
     document.getElementById('vipName').value=name;
-    loadStoredMessages();
-    startBroadcast();
+    startPolling();
   }
 }
 
-// ══════════════════════════════════════════
-// PUBLIC CHAT — BroadcastChannel
-// Messages seen across ALL open tabs
-// ══════════════════════════════════════════
-const BC_KEY='bg_public_chat';
-let bc=null;
+window.addEventListener('DOMContentLoaded',()=>{
+  loadVisitorStats();
+  checkName();
+});
 
-function loadStoredMessages(){
+// ══════════════════════════════════════════
+// REAL GLOBAL CHAT — JSONBin
+// Messages stored on JSONBin server
+// EVERY person on EVERY device sees them
+// Polls every 4 seconds for new messages
+// ══════════════════════════════════════════
+const JBIN_KEY='$2a$10$bZQPB3OW1ImoNdAgmsKZfuqtTvergROzeSjf2YBaoYwScP73N2BHu';
+const JBIN_ID='69c02544aa77b81da90af6a2';
+const JBIN_URL=`https://api.jsonbin.io/v3/b/${JBIN_ID}`;
+
+let lastMsgCount=0;
+let pollInterval=null;
+
+// Fetch all messages from server
+async function fetchMessages(){
+  try{
+    const res=await fetch(JBIN_URL,{
+      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
+    });
+    const data=await res.json();
+    const msgs=data.messages||[];
+    if(msgs.length!==lastMsgCount){
+      lastMsgCount=msgs.length;
+      renderAllMessages(msgs);
+    }
+  }catch(e){console.log('Chat fetch error',e);}
+}
+
+// Save new message to server
+async function saveMessage(msg){
+  try{
+    // First get current messages
+    const res=await fetch(JBIN_URL,{
+      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
+    });
+    const data=await res.json();
+    const msgs=data.messages||[];
+    msgs.push(msg);
+    // Keep only last 100 messages
+    const trimmed=msgs.slice(-100);
+    // Save back
+    await fetch(JBIN_URL,{
+      method:'PUT',
+      headers:{
+        'Content-Type':'application/json',
+        'X-Master-Key':JBIN_KEY
+      },
+      body:JSON.stringify({messages:trimmed})
+    });
+    lastMsgCount=trimmed.length;
+    renderAllMessages(trimmed);
+  }catch(e){
+    showToast('Could not send — check connection');
+    console.log('Chat save error',e);
+  }
+}
+
+function renderAllMessages(msgs){
   const container=document.getElementById('chatMessages');
-  const stored=JSON.parse(localStorage.getItem(BC_KEY)||'[]');
-  const recent=stored.slice(-50);
-  if(recent.length>0){
-    const welcome=container.querySelector('.chat-welcome');
-    if(welcome)welcome.remove();
+  container.innerHTML='';
+  if(!msgs.length){
+    container.innerHTML='<div class="chat-welcome"><span>👋</span><span>Be the first to say hello!</span></div>';
+    return;
   }
-  recent.forEach(m=>appendChatMsg(m,false));
+  msgs.forEach(m=>appendChatMsg(m,false));
   scrollChatBottom();
-}
-
-function startBroadcast(){
-  if('BroadcastChannel' in window){
-    if(bc)bc.close();
-    bc=new BroadcastChannel('bg_chat_room');
-    bc.onmessage=e=>{
-      if(e.data.type==='msg')appendChatMsg(e.data.msg,true);
-    };
-  }
 }
 
 function sendChatMsg(){
@@ -1261,15 +1290,12 @@ function sendChatMsg(){
   if(!name){changeName();return;}
   const text=document.getElementById('chatMsg').value.trim();
   if(!text)return;
-  const msg={name,text,ts:Date.now()};
-  const stored=JSON.parse(localStorage.getItem(BC_KEY)||'[]');
-  stored.push(msg);
-  if(stored.length>200)stored.splice(0,stored.length-200);
-  localStorage.setItem(BC_KEY,JSON.stringify(stored));
-  appendChatMsg(msg,true);
-  if(bc)bc.postMessage({type:'msg',msg});
   document.getElementById('chatMsg').value='';
-  scrollChatBottom();
+  const msg={name,text,ts:Date.now()};
+  // Show immediately for sender
+  appendChatMsg(msg,true);
+  // Save to server — everyone else sees it
+  saveMessage(msg);
 }
 
 function appendChatMsg(msg,animate){
@@ -1296,6 +1322,13 @@ function scrollChatBottom(){
 
 function escHtml(str){
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Start polling every 4 seconds — new messages appear automatically
+function startPolling(){
+  fetchMessages();
+  if(pollInterval)clearInterval(pollInterval);
+  pollInterval=setInterval(fetchMessages,4000);
 }
 </script>
 </body>
