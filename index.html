@@ -29,7 +29,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
   padding:14px 48px;
   background:linear-gradient(to bottom,rgba(4,3,10,.98),transparent);
   backdrop-filter:blur(10px);animation:fD .7s both;
-  border-bottom:1px solid rgba(255,26,108,.06);}
+  border-bottom:1px solid rgba(255,26,108,.06);
+  /* Prevent nav content overflow */
+  overflow:visible;
+  gap:12px;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .logo-text{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;
   letter-spacing:3px;text-transform:uppercase;color:#fff;
@@ -53,32 +56,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 /* ══ NAV MENU BUTTON ══ */
 .nav-menu-wrap{position:relative;display:inline-flex;}
 
-/* The butt button — now lives IN the nav */
 .butt-btn{
   display:inline-flex;align-items:center;gap:8px;
   padding:7px 14px;
   background:rgba(255,26,108,.08);
   border:1.5px solid rgba(255,26,108,.4);
-  border-radius:6px;
-  cursor:pointer;
-  transition:all .3s;
+  border-radius:6px;cursor:pointer;transition:all .3s;
   font-family:'Montserrat',sans-serif;
   font-size:.6rem;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;
-  color:var(--pink2);
-  position:relative;
-  overflow:hidden;
+  color:var(--pink2);position:relative;overflow:hidden;
 }
-.butt-btn::before{
-  content:'';position:absolute;inset:0;
+.butt-btn::before{content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,rgba(255,26,108,.12),transparent);
-  transform:translateX(-101%);transition:transform .3s;
-}
-.butt-btn:hover{
-  border-color:var(--pink);
-  color:#fff;
-  box-shadow:0 0 20px rgba(255,26,108,.3);
-}
+  transform:translateX(-101%);transition:transform .3s;}
+.butt-btn:hover{border-color:var(--pink);color:#fff;box-shadow:0 0 20px rgba(255,26,108,.3);}
 .butt-btn:hover::before{transform:translateX(0);}
 .butt-svg{width:26px;height:26px;flex-shrink:0;position:relative;z-index:1;transition:all .3s;}
 .butt-btn:hover .butt-svg{filter:drop-shadow(0 0 6px var(--pink));}
@@ -86,49 +78,47 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .butt-chevron{position:relative;z-index:1;font-size:.6rem;transition:transform .3s;}
 .butt-btn.open .butt-chevron{transform:rotate(180deg);}
 
-/* DROPDOWN MENU — drops down from nav */
+/* FULL WIDTH SLIDE DOWN MENU
+   Opens below entire nav bar
+   Always 100% on screen on any phone */
 .float-menu{
-  position:absolute;
-  top:calc(100% + 10px);
+  position:fixed;
+  top:56px;
+  left:0;
   right:0;
-  min-width:200px;
+  width:100%;
   z-index:399;
-  background:rgba(8,6,16,.97);
-  border:1px solid rgba(255,26,108,.25);
-  border-radius:10px;
-  padding:6px;
-  display:flex;flex-direction:column;gap:2px;
+  background:rgba(8,6,16,.98);
+  border-bottom:2px solid rgba(255,26,108,.25);
+  padding:8px 16px 12px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
   opacity:0;pointer-events:none;
-  transform:translateY(-8px) scale(.97);
+  transform:translateY(-10px);
   transition:all .3s cubic-bezier(.16,.8,.4,1);
   backdrop-filter:blur(20px);
-  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,26,108,.1);
+  box-shadow:0 10px 40px rgba(0,0,0,.8);
 }
 .float-menu.open{
   opacity:1;pointer-events:all;
-  transform:translateY(0) scale(1);
+  transform:translateY(0);
 }
-/* Arrow tip pointing up */
-.float-menu::before{
-  content:'';position:absolute;top:-6px;right:20px;
-  width:12px;height:12px;
-  background:rgba(8,6,16,.97);
-  border-left:1px solid rgba(255,26,108,.25);
-  border-top:1px solid rgba(255,26,108,.25);
-  transform:rotate(45deg);
-}
+.menu-divider{display:none;}
 .menu-item{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 20px;border-radius:8px;
-  cursor:pointer;transition:all .3s;
-  font-size:.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(255,255,255,.6);white-space:nowrap;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:12px 8px;border-radius:8px;cursor:pointer;
+  transition:all .3s;font-size:.58rem;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+  color:rgba(255,255,255,.6);text-align:center;
+  border:1px solid rgba(255,26,108,.08);
+  background:rgba(255,26,108,.04);
 }
-.menu-item:hover{background:rgba(255,26,108,.12);color:#fff;}
+.menu-item:hover{background:rgba(255,26,108,.15);color:#fff;border-color:rgba(255,26,108,.3);}
 .menu-item.active{background:rgba(255,26,108,.15);color:var(--pink);}
-.menu-item svg{width:18px;height:18px;flex-shrink:0;}
+.menu-item svg{width:20px;height:20px;flex-shrink:0;}
 .menu-item .live-dot{width:6px;height:6px;border-radius:50%;background:#ff4444;
-  animation:blink .8s infinite;flex-shrink:0;}
+  animation:blink .8s infinite;}
 
 /* ══ HERO ══ */
 .hero{position:relative;z-index:10;height:100vh;min-height:600px;
@@ -706,7 +696,7 @@ footer{position:relative;z-index:10;
         <span class="butt-btn-text">Menu</span>
         <span class="butt-chevron">▾</span>
       </div>
-      <!-- DROPDOWN MENU -->
+      <!-- DROPDOWN MENU — full width, always on screen -->
       <div class="float-menu" id="floatMenu">
         <div class="menu-item" onclick="scrollTo('videos');closeMenu()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
@@ -714,25 +704,23 @@ footer{position:relative;z-index:10;
         </div>
         <div class="menu-item" onclick="scrollTo('chat');closeMenu()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-          Public Chat
+          Chat
         </div>
         <div class="menu-item" onclick="openVIP();closeMenu()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          👑 VIP Room
+          👑 VIP
         </div>
         <div class="menu-item" onclick="scrollTo('live');closeMenu()">
-          <div class="live-dot" style="width:6px;height:6px;border-radius:50%;background:#ff4444;animation:blink .8s infinite;flex-shrink:0;"></div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49m11.31-2.82a10 10 0 010 14.14m-14.14 0a10 10 0 010-14.14"/></svg>
-          🔴 Go Live
+          🔴 Live
         </div>
-        <div class="menu-divider" style="height:1px;background:rgba(255,26,108,.1);margin:4px 8px;"></div>
         <div class="menu-item" onclick="window.open('https://onlyfans.com/u355085640','_blank');closeMenu()">
           <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
           OnlyFans
         </div>
         <div class="menu-item" onclick="window.open('https://twitter.com/l_sreejith87497','_blank');closeMenu()">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.849L2.25 2.25h6.928l4.279 5.658 5.787-5.658Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          Follow on X
+          X / Twitter
         </div>
       </div>
     </div>
