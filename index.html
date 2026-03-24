@@ -541,7 +541,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .vip-msg-time{font-size:.46rem;color:rgba(212,168,83,.25);letter-spacing:1px;}
 
 /* VIP INPUT */
-.vip-input-row{display:flex;gap:10px;}
+.vip-input-row{display:flex;gap:8px;align-items:center;}
+.vip-photo-btn{
+  background:rgba(212,168,83,.1);
+  border:1px solid rgba(212,168,83,.3);
+  border-radius:6px;color:var(--gold);
+  width:40px;height:40px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .3s;
+}
+.vip-photo-btn:hover{background:rgba(212,168,83,.2);border-color:var(--gold);
+  box-shadow:0 0 12px rgba(212,168,83,.3);}
 .vip-name-input,.vip-msg-input{
   background:rgba(30,15,0,.7);
   border:1px solid rgba(212,168,83,.2);
@@ -557,12 +567,41 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;
 .vip-name-input::placeholder,.vip-msg-input::placeholder{color:rgba(212,168,83,.2);}
 .vip-send-btn{
   background:linear-gradient(135deg,#c9a020,#f0d060);
-  color:#1a0800;border:none;padding:12px 20px;
+  color:#1a0800;border:none;padding:12px 16px;
   font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;
   letter-spacing:2px;text-transform:uppercase;
   border-radius:6px;cursor:pointer;transition:all .3s;white-space:nowrap;
 }
 .vip-send-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,83,.3);}
+
+/* UPLOAD PROGRESS */
+.vip-upload-progress{
+  display:none;margin-top:8px;padding:8px 12px;
+  background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.2);
+  border-radius:6px;
+}
+.vip-upload-progress.show{display:block;}
+.vip-upload-bar{
+  height:3px;background:rgba(212,168,83,.2);border-radius:2px;
+  margin-bottom:6px;overflow:hidden;
+}
+.vip-upload-bar::after{
+  content:'';display:block;height:100%;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  border-radius:2px;
+  animation:uploadAnim 1.5s ease-in-out infinite;
+}
+@keyframes uploadAnim{0%{width:0;transform:translateX(0);}50%{width:60%;}100%{width:100%;}}
+#vipUploadText{font-size:.58rem;color:rgba(212,168,83,.6);letter-spacing:2px;text-transform:uppercase;}
+
+/* VIP PHOTO in chat */
+.vip-msg-photo{
+  max-width:100%;max-height:200px;border-radius:8px;
+  margin-top:6px;display:block;
+  border:1px solid rgba(212,168,83,.2);
+  cursor:pointer;transition:transform .2s;
+}
+.vip-msg-photo:hover{transform:scale(1.02);}
 
 /* ══ LIVE SECTION ══ */
 .live-section{position:relative;z-index:10;padding:52px 48px;}
@@ -698,11 +737,11 @@ footer{position:relative;z-index:10;
       </div>
       <!-- DROPDOWN MENU — full width, always on screen -->
       <div class="float-menu" id="floatMenu">
-        <div class="menu-item" onclick="scrollTo('videos');closeMenu()">
+        <div class="menu-item" onclick="goTo('videos')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
           Videos
         </div>
-        <div class="menu-item" onclick="scrollTo('chat');closeMenu()">
+        <div class="menu-item" onclick="goTo('chat')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           Chat
         </div>
@@ -710,7 +749,7 @@ footer{position:relative;z-index:10;
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           👑 VIP
         </div>
-        <div class="menu-item" onclick="scrollTo('live');closeMenu()">
+        <div class="menu-item" onclick="goTo('live')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49m11.31-2.82a10 10 0 010 14.14m-14.14 0a10 10 0 010-14.14"/></svg>
           🔴 Live
         </div>
@@ -839,7 +878,7 @@ footer{position:relative;z-index:10;
         <span>Welcome to the public chat! Say hello to everyone!</span>
       </div>
     </div>
-    <!-- INPUT — no name field, name is saved permanently -->
+    <!-- INPUT — name is permanent, just type and send -->
     <div class="chat-input-row">
       <div class="chat-user-tag" id="chatUserTag">...</div>
       <input class="chat-msg-inp" type="text" id="chatMsg" placeholder="Type a message..." maxlength="200"
@@ -848,24 +887,21 @@ footer{position:relative;z-index:10;
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
       </button>
     </div>
-    <div class="chat-change-name">
-      <span onclick="changeName()">Change your name</span>
-    </div>
   </div>
 </section>
 
-<!-- NAME REGISTRATION POPUP — shows once, forever saved -->
+<!-- NAME REGISTRATION POPUP — shows ONCE forever -->
 <div class="name-popup-bg" id="namePopupBg">
   <div class="name-popup">
-    <div class="name-popup-icon">💬</div>
-    <div class="name-popup-title">Choose Your Name</div>
-    <div class="name-popup-sub">This name will be saved permanently on your device. You only need to do this once!</div>
+    <div class="name-popup-icon">👤</div>
+    <div class="name-popup-title">Your Name</div>
+    <div class="name-popup-sub">Choose your name carefully! This is permanent and cannot be changed. Everyone will see you by this name.</div>
     <input class="name-popup-input" type="text" id="namePopupInput"
       placeholder="Enter your name..."
       maxlength="20"
       onkeydown="if(event.key==='Enter')saveNamePopup()">
     <div class="name-popup-err" id="namePopupErr">Please enter a name!</div>
-    <button class="name-popup-btn" onclick="saveNamePopup()">✓ &nbsp;Save My Name</button>
+    <button class="name-popup-btn" onclick="saveNamePopup()">✓ &nbsp;Lock My Name Forever</button>
   </div>
 </div>
 
@@ -956,10 +992,25 @@ footer{position:relative;z-index:10;
       </div>
     </div>
     <div class="vip-input-row">
+      <!-- Hidden file input -->
+      <input type="file" id="vipPhotoInput" accept="image/*"
+        style="display:none" onchange="uploadVipPhoto(this)">
+      <!-- Photo button -->
+      <button class="vip-photo-btn" onclick="document.getElementById('vipPhotoInput').click()" title="Send Photo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </button>
       <input class="vip-msg-input" type="text" id="vipMsgInput"
         placeholder="Type a message..." maxlength="200"
         onkeydown="if(event.key==='Enter')sendVipMsg()">
       <button class="vip-send-btn" onclick="sendVipMsg()">Send ✦</button>
+    </div>
+    <!-- Upload progress indicator -->
+    <div class="vip-upload-progress" id="vipUploadProgress">
+      <div class="vip-upload-bar" id="vipUploadBar"></div>
+      <span id="vipUploadText">Uploading photo...</span>
     </div>
   </div>
 </div>
@@ -1005,8 +1056,12 @@ function closeMenu(){
 document.addEventListener('click',e=>{
   if(!e.target.closest('.nav-menu-wrap'))closeMenu();
 });
-function scrollTo(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+function goTo(id){
+  closeMenu();
+  setTimeout(()=>{
+    const el=document.getElementById(id);
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  },100);
 }
 
 // VISITOR COUNTER
@@ -1113,7 +1168,82 @@ function createParticles(){
 }
 
 // ══════════════════════════════════════════
-// VIP CHAT — Real Global via JSONBin
+// VIP PHOTO UPLOAD — ImgBB
+// Free image hosting — uploads instantly
+// Photo appears in chat for ALL VIP members
+// ══════════════════════════════════════════
+const IMGBB_KEY='d5ea513f695e822b3a464ba646fc90af';
+
+async function uploadVipPhoto(input){
+  const file=input.files[0];
+  if(!file)return;
+  const name=getMyName();
+  if(!name){showToast('Set your name first');return;}
+
+  // Show progress
+  const progress=document.getElementById('vipUploadProgress');
+  const uploadText=document.getElementById('vipUploadText');
+  progress.classList.add('show');
+  uploadText.textContent='Uploading photo...';
+
+  try{
+    // Convert to base64
+    const base64=await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=()=>resolve(reader.result.split(',')[1]);
+      reader.onerror=reject;
+      reader.readAsDataURL(file);
+    });
+
+    // Upload to ImgBB
+    const formData=new FormData();
+    formData.append('image',base64);
+    formData.append('key',IMGBB_KEY);
+
+    const res=await fetch('https://api.imgbb.com/1/upload',{
+      method:'POST',
+      body:formData
+    });
+    const data=await res.json();
+
+    if(data.success){
+      const imgUrl=data.data.url;
+      uploadText.textContent='Photo sent! ✓';
+      setTimeout(()=>progress.classList.remove('show'),2000);
+
+      // Send as photo message
+      const msg={name,text:'',photo:imgUrl,ts:Date.now()};
+      // Show immediately
+      appendVipPhotoMsg(msg);
+      // Save to server
+      saveVipMessage(msg);
+    }else{
+      throw new Error('Upload failed');
+    }
+  }catch(e){
+    uploadText.textContent='Upload failed — try again';
+    setTimeout(()=>progress.classList.remove('show'),3000);
+    showToast('Photo upload failed');
+  }
+
+  // Reset file input
+  input.value='';
+}
+
+function appendVipPhotoMsg(msg){
+  const container=document.getElementById('vipMessages');
+  const div=document.createElement('div');
+  div.className='vip-msg';
+  div.innerHTML=`
+    <div class="vip-msg-name">${escHtml(msg.name)} 📸</div>
+    <img class="vip-msg-photo" src="${msg.photo}" alt="photo"
+      onclick="window.open('${msg.photo}','_blank')"
+      loading="lazy">
+    <div class="vip-msg-time">${timeAgo(msg.ts)}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop=container.scrollHeight;
+}
 // Only people with password can see/send
 // Different bin from public chat
 // ══════════════════════════════════════════
@@ -1163,7 +1293,7 @@ async function saveVipMessage(msg){
 function renderVipMsgs(msgs){
   const container=document.getElementById('vipMessages');
   container.innerHTML='';
-  // Always show welcome message
+  // Welcome message
   const welcome=document.createElement('div');
   welcome.className='vip-msg';
   welcome.innerHTML=`
@@ -1176,11 +1306,23 @@ function renderVipMsgs(msgs){
     msgs.forEach(m=>{
       const div=document.createElement('div');
       div.className='vip-msg';
-      div.innerHTML=`
-        <div class="vip-msg-name">${escHtml(m.name)}</div>
-        <div class="vip-msg-text">${escHtml(m.text)}</div>
-        <div class="vip-msg-time">${timeAgo(m.ts)}</div>
-      `;
+      if(m.photo){
+        // Photo message
+        div.innerHTML=`
+          <div class="vip-msg-name">${escHtml(m.name)} 📸</div>
+          <img class="vip-msg-photo" src="${m.photo}" alt="photo"
+            onclick="window.open('${m.photo}','_blank')"
+            loading="lazy">
+          <div class="vip-msg-time">${timeAgo(m.ts)}</div>
+        `;
+      }else{
+        // Text message
+        div.innerHTML=`
+          <div class="vip-msg-name">${escHtml(m.name)}</div>
+          <div class="vip-msg-text">${escHtml(m.text)}</div>
+          <div class="vip-msg-time">${timeAgo(m.ts)}</div>
+        `;
+      }
       container.appendChild(div);
     });
   }
@@ -1260,26 +1402,14 @@ function saveNamePopup(){
   }
 }
 
-function changeName(){
-  // Only show popup when user WANTS to change name
-  const popup=document.getElementById('namePopupBg');
-  popup.style.display=''; // restore display
-  document.getElementById('namePopupInput').value=getMyName();
-  document.getElementById('namePopupErr').style.display='none';
-  popup.classList.add('show');
-  setTimeout(()=>document.getElementById('namePopupInput').focus(),400);
-}
-
 function checkName(){
   const name=getMyName();
   if(!name){
-    // First time ever — show popup
     const popup=document.getElementById('namePopupBg');
     popup.style.display='';
     popup.classList.add('show');
     setTimeout(()=>document.getElementById('namePopupInput').focus(),500);
   }else{
-    // Name exists — hide popup forever, load chat
     const popup=document.getElementById('namePopupBg');
     popup.classList.remove('show');
     popup.style.display='none';
