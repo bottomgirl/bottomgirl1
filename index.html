@@ -688,6 +688,98 @@ footer{position:relative;z-index:10;
   transform:translateY(12px);opacity:0;transition:all .3s;max-width:220px;}
 .toast.on{transform:translateY(0);opacity:1;}
 
+/* ══ VIDEO LOADING ══ */
+.vid-loading{
+  grid-column:1/-1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  padding:60px 24px;color:rgba(255,255,255,.2);
+  font-size:.65rem;letter-spacing:3px;text-transform:uppercase;
+}
+.vid-loading-spin{
+  width:32px;height:32px;border-radius:50%;
+  border:2px solid rgba(255,26,108,.2);
+  border-top-color:var(--pink);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ══ UPLOAD ADMIN PANEL ══ */
+.upload-overlay{
+  position:fixed;inset:0;z-index:850;
+  background:rgba(4,3,10,.97);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .4s;
+}
+.upload-overlay.show{opacity:1;pointer-events:all;}
+.upload-panel{
+  width:100%;max-width:480px;
+  background:var(--black2);border:1px solid rgba(255,26,108,.2);
+  border-radius:12px;padding:24px;
+  max-height:90vh;overflow-y:auto;
+}
+.upload-header{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(255,26,108,.1);}
+.upload-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;
+  display:flex;align-items:center;gap:8px;}
+.upload-close{background:none;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);
+  width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.65rem;cursor:pointer;transition:all .3s;}
+.upload-close:hover{border-color:var(--pink);color:var(--pink);}
+.upload-field-label{font-size:.55rem;letter-spacing:3px;color:rgba(255,26,108,.5);
+  text-transform:uppercase;margin-bottom:6px;margin-top:14px;}
+.upload-input{width:100%;background:rgba(26,14,34,.8);border:1px solid rgba(255,26,108,.15);
+  border-radius:6px;color:#fff;padding:12px 14px;font-family:'Montserrat',sans-serif;
+  font-size:.76rem;outline:none;transition:border-color .3s;margin-bottom:4px;}
+.upload-input:focus{border-color:var(--pink);}
+.upload-input::placeholder{color:rgba(255,255,255,.18);}
+.upload-select{width:100%;background:rgba(26,14,34,.8);border:1px solid rgba(255,26,108,.15);
+  border-radius:6px;color:#fff;padding:12px 14px;font-family:'Montserrat',sans-serif;
+  font-size:.76rem;outline:none;transition:border-color .3s;-webkit-appearance:none;}
+.upload-select:focus{border-color:var(--pink);}
+.upload-pw-err{color:#ff6b6b;font-size:.58rem;letter-spacing:2px;margin-bottom:8px;display:none;}
+.upload-drop{
+  border:2px dashed rgba(255,26,108,.25);border-radius:8px;
+  padding:28px 20px;text-align:center;cursor:pointer;
+  transition:all .3s;margin-bottom:4px;
+}
+.upload-drop:hover{border-color:var(--pink);background:rgba(255,26,108,.05);}
+.upload-drop svg{color:rgba(255,26,108,.3);margin:0 auto 10px;display:block;}
+.upload-drop-text{font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:1px;margin-bottom:4px;}
+.upload-drop-sub{font-size:.58rem;color:rgba(255,255,255,.2);letter-spacing:1px;}
+.upload-drop-chosen{font-size:.65rem;color:var(--pink2);margin-top:8px;font-weight:600;}
+.upload-progress-wrap{margin:12px 0;}
+.upload-progress-bar{height:6px;background:rgba(255,26,108,.1);border-radius:3px;overflow:hidden;margin-bottom:6px;}
+.upload-progress-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--pink2));
+  border-radius:3px;width:0%;transition:width .3s;}
+.upload-progress-text{font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:2px;text-align:center;}
+.upload-btn{width:100%;background:var(--pink);color:#fff;border:none;
+  padding:14px;font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;border-radius:6px;
+  cursor:pointer;transition:all .3s;margin-top:14px;}
+.upload-btn:hover{background:var(--pink2);transform:translateY(-2px);}
+.upload-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.upload-success{background:rgba(0,200,100,.1);border:1px solid rgba(0,200,100,.3);
+  border-radius:6px;padding:12px;text-align:center;
+  font-size:.68rem;color:#00c864;letter-spacing:2px;margin-top:12px;}
+
+/* ══ VIDEO PLAYER CARD ══ */
+.vc-video-player{
+  width:100%;aspect-ratio:16/9;background:#000;
+  display:none;position:relative;
+}
+.vc-video-player.active{display:block;}
+.vc-video-player video{
+  width:100%;height:100%;object-fit:contain;display:block;
+}
+.vc-delete-btn{
+  position:absolute;top:8px;right:8px;z-index:20;
+  background:rgba(255,50,50,.8);border:none;color:#fff;
+  width:28px;height:28px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  font-size:.6rem;cursor:pointer;transition:all .3s;
+}
+.vc-delete-btn.admin-show{display:flex;}
+
 @keyframes fU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fD{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 
@@ -806,55 +898,76 @@ footer{position:relative;z-index:10;
     <h2 class="sec-title">Watch <em>Now</em></h2>
     <p class="sec-sub">Tap any video to play instantly</p>
   </div>
-  <div class="videos-grid">
-    <!-- VIDEO 1 -->
-    <div class="video-card" id="vc1">
-      <div class="vc-thumb" id="vt1" onclick="playVideo(1)">
-        <img src="https://drive.google.com/thumbnail?id=1cEwXQBSde8HvtvdbwknezPb0fKeHfyNx&sz=w800-h450" alt="Bottomgirl Exclusive"
-          onerror="this.style.display='none';document.getElementById('vph1').style.display='flex'">
-        <div class="vc-thumb-ph" id="vph1" style="display:none;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-        </div>
-        <div class="vc-play-ov"><div class="vc-play-circle"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
-        <div class="vc-live-tag"><div class="vc-live-dot"></div>EXCLUSIVE</div>
-      </div>
-      <div class="vc-player" id="vp1">
-        <button class="vc-close" onclick="closeVideo(1)">✕</button>
-        <iframe id="if1" src="" allow="autoplay" allowfullscreen="false"></iframe>
-      </div>
-      <div class="vc-info">
-        <div class="vc-title">Bottomgirl Exclusive</div>
-        <div class="vc-meta"><span class="vc-badge vc-badge-new">New</span><span class="vc-dur">⏱ 4 sec</span></div>
-        <a class="vc-of" href="https://onlyfans.com/u355085640" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
-          More on OnlyFans
-        </a>
-      </div>
-    </div>
-    <!-- VIDEO 2 -->
-    <div class="video-card" id="vc2">
-      <div class="vc-thumb" id="vt2" onclick="playVideo(2)">
-        <div class="vc-thumb-ph">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
-        </div>
-        <div class="vc-play-ov"><div class="vc-play-circle"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
-        <div class="vc-live-tag"><div class="vc-live-dot"></div>EXCLUSIVE</div>
-      </div>
-      <div class="vc-player" id="vp2">
-        <button class="vc-close" onclick="closeVideo(2)">✕</button>
-        <iframe id="if2" src="" allow="autoplay" allowfullscreen="false"></iframe>
-      </div>
-      <div class="vc-info">
-        <div class="vc-title">Wanna Make My Pussy Wet</div>
-        <div class="vc-meta"><span class="vc-badge vc-badge-exc">⭐ Exclusive</span><span class="vc-dur">⏱ 2:44</span></div>
-        <a class="vc-of" href="https://onlyfans.com/u355085640" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
-          More on OnlyFans
-        </a>
-      </div>
+  <div class="videos-grid" id="videosGrid">
+    <!-- Videos load dynamically from server -->
+    <div class="vid-loading">
+      <div class="vid-loading-spin"></div>
+      <div>Loading videos...</div>
     </div>
   </div>
 </section>
+
+<!-- ══ UPLOAD ADMIN PANEL ══ -->
+<!-- Hidden — only shows with ?upload=true in URL + password -->
+<div class="upload-overlay" id="uploadOverlay">
+  <div class="upload-panel">
+    <div class="upload-header">
+      <div class="upload-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        Upload Video
+      </div>
+      <button class="upload-close" onclick="closeUpload()">✕</button>
+    </div>
+
+    <!-- PASSWORD CHECK -->
+    <div id="uploadPwSection">
+      <div class="upload-field-label">Admin Password</div>
+      <input class="upload-input" type="password" id="uploadPw"
+        placeholder="Enter password..."
+        onkeydown="if(event.key==='Enter')checkUploadPw()">
+      <div class="upload-pw-err" id="uploadPwErr">✕ Wrong password</div>
+      <button class="upload-btn" onclick="checkUploadPw()">Unlock ✓</button>
+    </div>
+
+    <!-- UPLOAD FORM — shown after password -->
+    <div id="uploadForm" style="display:none;">
+      <div class="upload-field-label">Video Title *</div>
+      <input class="upload-input" type="text" id="uploadTitle" placeholder="e.g. My Exclusive Video">
+
+      <div class="upload-field-label">Badge</div>
+      <select class="upload-select" id="uploadBadge">
+        <option value="new">🆕 New</option>
+        <option value="exclusive">⭐ Exclusive</option>
+        <option value="hot">🔥 Hot</option>
+        <option value="">No Badge</option>
+      </select>
+
+      <div class="upload-field-label">Video File * (MP4, MOV)</div>
+      <div class="upload-drop" id="uploadDrop" onclick="document.getElementById('uploadFile').click()">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        <div class="upload-drop-text">Tap to choose video</div>
+        <div class="upload-drop-sub">MP4, MOV — max 100MB</div>
+        <div class="upload-drop-chosen" id="uploadDropChosen"></div>
+      </div>
+      <input type="file" id="uploadFile" accept="video/*" style="display:none" onchange="onVideoChosen(this)">
+
+      <!-- PROGRESS BAR -->
+      <div class="upload-progress-wrap" id="uploadProgressWrap" style="display:none;">
+        <div class="upload-progress-bar">
+          <div class="upload-progress-fill" id="uploadProgressFill"></div>
+        </div>
+        <div class="upload-progress-text" id="uploadProgressText">Uploading... 0%</div>
+      </div>
+
+      <button class="upload-btn" id="uploadSubmitBtn" onclick="submitUpload()">
+        ⬆️ &nbsp;Upload & Publish
+      </button>
+      <div class="upload-success" id="uploadSuccess" style="display:none;">
+        ✅ Video published! Everyone can see it now.
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ══ AD MID ══ -->
 <div class="ad-bar"><div class="ad-lbl">Advertisement</div></div>
@@ -1096,18 +1209,159 @@ async function loadVisitorStats(){
   }
 }
 
-// VIDEOS
-const VIDEO_IDS={1:'1tOpQtrTmoJT7H2e6k2D12XdXg3RqjMwn',2:'1DmPpdjQbXktkSI1QapIgbcHHxFATdup4'};
-function playVideo(n){
-  document.getElementById('vt'+n).style.display='none';
-  const p=document.getElementById('vp'+n);
-  p.classList.add('active');
-  document.getElementById('if'+n).src=`https://drive.google.com/file/d/${VIDEO_IDS[n]}/preview`;
+// ══════════════════════════════════════════
+// CLOUDINARY CONFIG
+// ══════════════════════════════════════════
+const CLOUD_NAME='dh59xfbmr';
+const CLOUD_PRESET='bujnwovp';
+const ADMIN_PW='bottomgirl2025';
+let chosenVideoFile=null;
+let isAdminUnlocked=false;
+
+// Load videos on page load
+async function loadVideos(){
+  const grid=document.getElementById('videosGrid');
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{
+      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
+    });
+    const data=await res.json();
+    const videos=data.videos||[];
+    renderVideos(videos);
+  }catch(e){
+    grid.innerHTML=`<div class="vid-loading"><div>Could not load videos</div></div>`;
+  }
 }
-function closeVideo(n){
-  document.getElementById('vt'+n).style.display='block';
-  document.getElementById('vp'+n).classList.remove('active');
-  document.getElementById('if'+n).src='';
+
+function renderVideos(videos){
+  const grid=document.getElementById('videosGrid');
+  if(!videos.length){
+    grid.innerHTML=`<div class="vid-loading">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.15)" stroke-width="1.2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+      <div>Videos coming soon</div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML=videos.map((v,i)=>`
+    <div class="video-card in">
+      <div class="vc-thumb" id="dynvt${i}" onclick="playDynVideo(${i})">
+        ${v.thumbnail
+          ?`<img src="${v.thumbnail}" alt="${v.title}" loading="lazy">`
+          :`<div class="vc-thumb-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,26,108,.3)" stroke-width="1.2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.879v6.242a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div>`}
+        <div class="vc-play-ov"><div class="vc-play-circle"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="vc-live-tag"><div class="vc-live-dot"></div>EXCLUSIVE</div>
+      </div>
+      <div class="vc-video-player" id="dynvp${i}">
+        <button class="vc-close" onclick="closeDynVideo(${i})">✕</button>
+        ${isAdminUnlocked?`<button class="vc-delete-btn admin-show" onclick="deleteVideo(${i})">🗑</button>`:''}
+        <video controls controlsList="nodownload" disablePictureInPicture playsinline>
+          <source src="${v.url}" type="video/mp4">
+        </video>
+      </div>
+      <div class="vc-info">
+        <div class="vc-title">${v.title}</div>
+        <div class="vc-meta">
+          ${v.badge==='new'?'<span class="vc-badge vc-badge-new">🆕 New</span>':v.badge==='hot'?'<span class="vc-badge vc-badge-hot">🔥 Hot</span>':v.badge==='exclusive'?'<span class="vc-badge vc-badge-exc">⭐ Exclusive</span>':''}
+        </div>
+        <a class="vc-of" href="https://onlyfans.com/u355085640" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5" fill="#04030a"/></svg>
+          More on OnlyFans
+        </a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function playDynVideo(i){
+  document.getElementById('dynvt'+i).style.display='none';
+  document.getElementById('dynvp'+i).classList.add('active');
+}
+function closeDynVideo(i){
+  const p=document.getElementById('dynvp'+i);
+  p.classList.remove('active');
+  p.querySelector('video').pause();
+  document.getElementById('dynvt'+i).style.display='block';
+}
+async function deleteVideo(i){
+  if(!confirm('Delete this video?'))return;
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}});
+    const data=await res.json();
+    const videos=data.videos||[];
+    videos.splice(i,1);
+    await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{
+      method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
+      body:JSON.stringify({...data,videos})
+    });
+    showToast('Video deleted');loadVideos();
+  }catch(e){showToast('Delete failed');}
+}
+
+// UPLOAD PANEL
+function closeUpload(){document.getElementById('uploadOverlay').classList.remove('show');}
+function checkUploadPw(){
+  if(document.getElementById('uploadPw').value===ADMIN_PW){
+    isAdminUnlocked=true;
+    document.getElementById('uploadPwSection').style.display='none';
+    document.getElementById('uploadForm').style.display='block';
+  }else{
+    document.getElementById('uploadPwErr').style.display='block';
+    document.getElementById('uploadPw').value='';
+  }
+}
+function onVideoChosen(input){
+  chosenVideoFile=input.files[0];
+  if(chosenVideoFile)document.getElementById('uploadDropChosen').textContent='✓ '+chosenVideoFile.name;
+}
+async function submitUpload(){
+  const title=document.getElementById('uploadTitle').value.trim();
+  if(!title){showToast('Enter a title');return;}
+  if(!chosenVideoFile){showToast('Choose a video file');return;}
+  const btn=document.getElementById('uploadSubmitBtn');
+  btn.disabled=true;btn.textContent='Uploading...';
+  const pw=document.getElementById('uploadProgressWrap');
+  const pf=document.getElementById('uploadProgressFill');
+  const pt=document.getElementById('uploadProgressText');
+  pw.style.display='block';
+  try{
+    const fd=new FormData();
+    fd.append('file',chosenVideoFile);
+    fd.append('upload_preset',CLOUD_PRESET);
+    const videoUrl=await new Promise((res,rej)=>{
+      const xhr=new XMLHttpRequest();
+      xhr.open('POST',`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`);
+      xhr.upload.onprogress=e=>{
+        if(e.lengthComputable){const p=Math.round(e.loaded/e.total*100);pf.style.width=p+'%';pt.textContent='Uploading... '+p+'%';}
+      };
+      xhr.onload=()=>{
+        if(xhr.status===200)res(JSON.parse(xhr.responseText).secure_url);
+        else rej(new Error('Upload failed'));
+      };
+      xhr.onerror=()=>rej(new Error('Network error'));
+      xhr.send(fd);
+    });
+    pt.textContent='Saving...';
+    const thumbUrl=videoUrl.replace('/video/upload/','/video/upload/w_480,h_270,c_fill,so_2/').replace(/\.[^/.]+$/,'.jpg');
+    const r=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}});
+    const d=await r.json();
+    const videos=d.videos||[];
+    videos.unshift({title,url:videoUrl,thumbnail:thumbUrl,badge:document.getElementById('uploadBadge').value,ts:Date.now()});
+    await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{
+      method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
+      body:JSON.stringify({...d,videos})
+    });
+    pf.style.width='100%';pt.textContent='Published! ✓';
+    document.getElementById('uploadSuccess').style.display='block';
+    document.getElementById('uploadTitle').value='';
+    document.getElementById('uploadFile').value='';
+    document.getElementById('uploadDropChosen').textContent='';
+    chosenVideoFile=null;btn.disabled=false;btn.textContent='⬆️  Upload & Publish';
+    setTimeout(()=>{loadVideos();closeUpload();},2000);
+  }catch(e){
+    pt.textContent='Failed — try again';
+    btn.disabled=false;btn.textContent='⬆️  Upload & Publish';
+    showToast('Upload failed');
+  }
 }
 
 // VIP ROOM
@@ -1421,6 +1675,11 @@ function checkName(){
 window.addEventListener('DOMContentLoaded',()=>{
   loadVisitorStats();
   checkName();
+  loadVideos();
+  // Check if upload panel should open
+  if(new URLSearchParams(window.location.search).get('upload')==='true'){
+    document.getElementById('uploadOverlay').classList.add('show');
+  }
 });
 
 // ══════════════════════════════════════════
