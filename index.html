@@ -1244,10 +1244,7 @@ let isAdminUnlocked=false;
 async function loadVideos(){
   const grid=document.getElementById('videosGrid');
   try{
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{
-      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
-    });
-    const data=await res.json();
+    const data=await binRead();
     const videos=data.videos||[];
     renderVideos(videos);
   }catch(e){
@@ -1307,14 +1304,10 @@ function closeDynVideo(i){
 async function deleteVideo(i){
   if(!confirm('Delete this video?'))return;
   try{
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}});
-    const data=await res.json();
+    const data=await binRead();
     const videos=data.videos||[];
     videos.splice(i,1);
-    await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{
-      method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
-      body:JSON.stringify({...data,videos})
-    });
+    await binWrite({videos});
     showToast('Video deleted');loadVideos();
   }catch(e){showToast('Delete failed');}
 }
@@ -1364,14 +1357,11 @@ async function submitUpload(){
     });
     pt.textContent='Saving...';
     const thumbUrl=videoUrl.replace('/video/upload/','/video/upload/w_480,h_270,c_fill,so_2/').replace(/\.[^/.]+$/,'.jpg');
-    const r=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}});
-    const d=await r.json();
+    // Safe read then write — preserves messages and VIP chat
+    const d=await binRead();
     const videos=d.videos||[];
     videos.unshift({title,url:videoUrl,thumbnail:thumbUrl,badge:document.getElementById('uploadBadge').value,ts:Date.now()});
-    await fetch(`https://api.jsonbin.io/v3/b/${JBIN_ID}`,{
-      method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
-      body:JSON.stringify({...d,videos})
-    });
+    await binWrite({videos});
     pf.style.width='100%';pt.textContent='Published! ✓';
     document.getElementById('uploadSuccess').style.display='block';
     document.getElementById('uploadTitle').value='';
@@ -1532,10 +1522,7 @@ let lastVipCount=0;
 
 async function fetchVipMessages(){
   try{
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_VIP_ID}`,{
-      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
-    });
-    const data=await res.json();
+    const data=await binRead();
     const msgs=data.vipMessages||[];
     if(msgs.length!==lastVipCount){
       lastVipCount=msgs.length;
@@ -1546,19 +1533,12 @@ async function fetchVipMessages(){
 
 async function saveVipMessage(msg){
   try{
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${JBIN_VIP_ID}`,{
-      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
-    });
-    const data=await res.json();
+    const data=await binRead();
     const msgs=data.vipMessages||[];
-    const pubMsgs=data.messages||[];
     msgs.push(msg);
     const trimmed=msgs.slice(-100);
-    await fetch(`https://api.jsonbin.io/v3/b/${JBIN_VIP_ID}`,{
-      method:'PUT',
-      headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
-      body:JSON.stringify({messages:pubMsgs,vipMessages:trimmed})
-    });
+    // Safe write — preserves messages and videos
+    await binWrite({vipMessages:trimmed});
     lastVipCount=trimmed.length;
     renderVipMsgs(trimmed);
   }catch(e){
@@ -1702,9 +1682,11 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 // ══════════════════════════════════════════
 // REAL GLOBAL CHAT — JSONBin
-// Messages stored on JSONBin server
-// EVERY person on EVERY device sees them
-// Polls every 4 seconds for new messages
+// ONE bin, THREE separate keys:
+//   messages    = public chat
+//   vipMessages = VIP chat
+//   videos      = uploaded videos
+// Safe write always preserves ALL keys
 // ══════════════════════════════════════════
 const JBIN_KEY='$2a$10$bZQPB3OW1ImoNdAgmsKZfuqtTvergROzeSjf2YBaoYwScP73N2BHu';
 const JBIN_ID='69c02544aa77b81da90af6a2';
@@ -1713,13 +1695,35 @@ const JBIN_URL=`https://api.jsonbin.io/v3/b/${JBIN_ID}`;
 let lastMsgCount=0;
 let pollInterval=null;
 
-// Fetch all messages from server
+// ══ SAFE READ ══
+// Always returns full bin data
+async function binRead(){
+  const res=await fetch(JBIN_URL,{
+    headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
+  });
+  return await res.json();
+}
+
+// ══ SAFE WRITE ══
+// CRITICAL — always reads first, then merges
+// so no key ever gets deleted by another save
+async function binWrite(updates){
+  // Read current full data
+  const current=await binRead();
+  // Merge updates into current — preserves ALL existing keys
+  const merged={...current,...updates};
+  await fetch(JBIN_URL,{
+    method:'PUT',
+    headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
+    body:JSON.stringify(merged)
+  });
+  return merged;
+}
+
+// Fetch public chat messages
 async function fetchMessages(){
   try{
-    const res=await fetch(JBIN_URL,{
-      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
-    });
-    const data=await res.json();
+    const data=await binRead();
     const msgs=data.messages||[];
     if(msgs.length!==lastMsgCount){
       lastMsgCount=msgs.length;
@@ -1728,32 +1732,18 @@ async function fetchMessages(){
   }catch(e){console.log('Chat fetch error',e);}
 }
 
-// Save new message to server
+// Save public chat message — preserves videos & VIP
 async function saveMessage(msg){
   try{
-    // First get current messages
-    const res=await fetch(JBIN_URL,{
-      headers:{'X-Master-Key':JBIN_KEY,'X-Bin-Meta':false}
-    });
-    const data=await res.json();
+    const data=await binRead();
     const msgs=data.messages||[];
     msgs.push(msg);
-    // Keep only last 100 messages
     const trimmed=msgs.slice(-100);
-    // Save back
-    await fetch(JBIN_URL,{
-      method:'PUT',
-      headers:{
-        'Content-Type':'application/json',
-        'X-Master-Key':JBIN_KEY
-      },
-      body:JSON.stringify({messages:trimmed})
-    });
+    await binWrite({messages:trimmed});
     lastMsgCount=trimmed.length;
     renderAllMessages(trimmed);
   }catch(e){
     showToast('Could not send — check connection');
-    console.log('Chat save error',e);
   }
 }
 
