@@ -784,8 +784,19 @@ footer{position:relative;z-index:10;
   display:none;position:relative;
 }
 .vc-video-player.active{display:block;}
-.vc-video-player video{
-  width:100%;height:100%;object-fit:contain;display:block;
+.vc-iframe-wrap{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+}
+/* Transparent guard — blocks right click, long press, download popup */
+.vid-guard{
+  position:absolute;inset:0;
+  z-index:5;
+  background:transparent;
+  /* Blocks touch hold and right click */
+  -webkit-touch-callout:none;
+  user-select:none;
+  pointer-events:none; /* allow clicking through for play */
 }
 .vc-delete-btn{
   position:absolute;top:8px;right:8px;z-index:20;
@@ -1273,9 +1284,18 @@ function renderVideos(videos){
       <div class="vc-video-player" id="dynvp${i}">
         <button class="vc-close" onclick="closeDynVideo(${i})">✕</button>
         ${isAdminUnlocked?`<button class="vc-delete-btn admin-show" onclick="deleteVideo(${i})">🗑</button>`:''}
-        <video controls controlsList="nodownload" disablePictureInPicture playsinline>
-          <source src="${v.url}" type="video/mp4">
-        </video>
+        <!-- Use Cloudinary player iframe — hides direct URL, no download option -->
+        <div class="vc-iframe-wrap" oncontextmenu="return false;">
+          <iframe
+            src="${buildPlayerUrl(v.url)}"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+            frameborder="0"
+            style="width:100%;height:100%;position:absolute;top:0;left:0;">
+          </iframe>
+          <!-- Invisible guard blocks right click and long press -->
+          <div class="vid-guard" oncontextmenu="return false;"></div>
+        </div>
       </div>
       <div class="vc-info">
         <div class="vc-title">${v.title}</div>
@@ -1291,6 +1311,16 @@ function renderVideos(videos){
   `).join('');
 }
 
+// Build Cloudinary player URL — hides direct MP4 link
+function buildPlayerUrl(url){
+  // Extract public ID from Cloudinary URL
+  const match=url.match(/\/video\/upload\/(?:v\d+\/)?(.+)$/);
+  if(!match)return url;
+  const publicId=match[1].replace(/\.[^/.]+$/,'');
+  // Use Cloudinary's video player — no download button shown
+  return`https://player.cloudinary.com/embed/?cloud_name=${CLOUD_NAME}&public_id=${encodeURIComponent(publicId)}&fluid=true&controls=true&source_types[]=mp4`;
+}
+
 function playDynVideo(i){
   document.getElementById('dynvt'+i).style.display='none';
   document.getElementById('dynvp'+i).classList.add('active');
@@ -1298,7 +1328,9 @@ function playDynVideo(i){
 function closeDynVideo(i){
   const p=document.getElementById('dynvp'+i);
   p.classList.remove('active');
-  p.querySelector('video').pause();
+  // Stop iframe video by resetting src
+  const iframe=p.querySelector('iframe');
+  if(iframe){const s=iframe.src;iframe.src='';iframe.src=s;}
   document.getElementById('dynvt'+i).style.display='block';
 }
 async function deleteVideo(i){
@@ -1606,6 +1638,12 @@ function sendVipMsg(){
   // Save to server
   saveVipMessage(msg);
 }
+// Block right click and long press on all video players
+document.addEventListener('contextmenu',e=>{
+  if(e.target.closest('.vc-video-player,.vc-iframe-wrap,.vid-guard')){
+    e.preventDefault();return false;
+  }
+});
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')closeVIP();
 });
