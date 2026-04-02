@@ -821,9 +821,147 @@ footer{position:relative;z-index:10;
   .vip-input-row{flex-wrap:wrap;}
   .vip-name-input{width:100%;}
 }
+
+/* ══ LOCK SCREEN ══ */
+.lock-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--black);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:24px;
+  transition:opacity .8s ease,transform .8s ease;
+}
+.lock-screen.unlocking{opacity:0;transform:scale(1.06);pointer-events:none;}
+.lock-screen.gone{display:none;}
+.lock-peaches{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.lock-peach{position:absolute;animation:floatPeach linear infinite;opacity:0;}
+@keyframes floatPeach{
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0;}
+  10%{opacity:.6;}90%{opacity:.3;}
+  100%{transform:translateY(-20vh) rotate(360deg);opacity:0;}
+}
+.lock-content{position:relative;z-index:2;text-align:center;max-width:380px;width:100%;}
+.lock-peach-ring{
+  width:130px;height:130px;border-radius:50%;
+  border:1.5px solid rgba(255,26,108,.3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;position:relative;
+  animation:lockFloat 3s ease-in-out infinite;
+}
+.lock-peach-ring::before,.lock-peach-ring::after{
+  content:'';position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid rgba(255,26,108,.15);
+  animation:lockRingPulse 2.5s ease-out infinite;
+}
+.lock-peach-ring::after{inset:-26px;animation-delay:.9s;}
+@keyframes lockFloat{
+  0%,100%{transform:translateY(0) rotate(-4deg);}
+  50%{transform:translateY(-16px) rotate(4deg);}
+}
+@keyframes lockRingPulse{
+  0%{transform:scale(1);opacity:.5;}100%{transform:scale(1.18);opacity:0;}
+}
+.lock-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,9vw,3.8rem);
+  font-weight:700;color:#fff;margin-bottom:4px;
+}
+.lock-title em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--pink),var(--pink2),#ffcce0);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.lock-sub{font-size:.62rem;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,255,255,.22);margin-bottom:10px;}
+.lock-age{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 14px;margin-bottom:32px;
+  background:rgba(255,26,108,.07);
+  border:1px solid rgba(255,26,108,.2);border-radius:4px;
+  font-size:.55rem;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,26,108,.6);
+}
+.lock-input-wrap{position:relative;margin-bottom:10px;}
+.lock-input{
+  width:100%;background:rgba(26,14,34,.9);
+  border:1.5px solid rgba(255,26,108,.25);
+  border-radius:8px;color:#fff;
+  padding:15px 48px 15px 20px;
+  font-family:'Montserrat',sans-serif;
+  font-size:.85rem;letter-spacing:3px;
+  outline:none;transition:all .3s;text-align:center;
+}
+.lock-input:focus{border-color:var(--pink);box-shadow:0 0 24px rgba(255,26,108,.2);}
+.lock-input::placeholder{color:rgba(255,255,255,.15);}
+.lock-eye{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:rgba(255,255,255,.3);
+  cursor:pointer;font-size:1.1rem;padding:4px;transition:color .3s;
+}
+.lock-eye:hover{color:var(--pink);}
+.lock-err{
+  color:#ff6b6b;font-size:.6rem;letter-spacing:2px;
+  text-align:center;margin-bottom:10px;display:none;
+  animation:errShake .4s ease;
+}
+@keyframes errShake{
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-8px);}75%{transform:translateX(8px);}
+}
+.lock-btn{
+  width:100%;background:linear-gradient(135deg,var(--pink),#c9006a);
+  color:#fff;border:none;padding:16px;
+  font-family:'Montserrat',sans-serif;
+  font-size:.78rem;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;
+  border-radius:8px;cursor:pointer;transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.lock-btn::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+  transform:translateX(-101%);transition:transform .35s;}
+.lock-btn:hover{transform:translateY(-3px);box-shadow:0 12px 36px var(--glow);}
+.lock-btn:hover::before{transform:translateX(0);}
+.lock-footer{margin-top:18px;font-size:.5rem;letter-spacing:2px;
+  color:rgba(255,255,255,.08);text-transform:uppercase;}
 </style>
 </head>
 <body>
+
+<!-- ══ LOCK SCREEN ══ -->
+<div class="lock-screen" id="lockScreen">
+  <!-- Floating peaches in background -->
+  <div class="lock-peaches" id="lockPeaches"></div>
+
+  <div class="lock-content">
+    <!-- Animated peach with pulsing rings -->
+    <div class="lock-peach-ring">
+      <svg width="72" height="72" viewBox="0 0 52 52" fill="none">
+        <ellipse cx="18" cy="30" rx="14" ry="16" fill="#ff1a6c" opacity="0.95"/>
+        <ellipse cx="34" cy="30" rx="14" ry="16" fill="#ff5fa0" opacity="0.95"/>
+        <path d="M26 14 Q24.5 26 26 40" stroke="#9b0040" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+        <path d="M26 13 Q29 6 34 4" stroke="#2d8a3e" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="33" cy="5.5" rx="4" ry="2" fill="#3aac52" transform="rotate(-30 33 5.5)"/>
+        <ellipse cx="14" cy="24" rx="4" ry="6" fill="white" opacity="0.18" transform="rotate(-15 14 24)"/>
+      </svg>
+    </div>
+
+    <div class="lock-title">BOTTOM <em>Girl</em></div>
+    <div class="lock-sub">Official · Exclusive Content</div>
+    <div class="lock-age">🔞 18+ Adults Only</div>
+
+    <div class="lock-input-wrap">
+      <input class="lock-input" type="password" id="lockInput"
+        placeholder="Enter password..."
+        onkeydown="if(event.key==='Enter')tryUnlock()">
+      <button class="lock-eye" onclick="toggleLockEye()" id="lockEyeBtn">👁</button>
+    </div>
+    <div class="lock-err" id="lockErr">✕ Wrong password — try again</div>
+    <button class="lock-btn" onclick="tryUnlock()">🔓 &nbsp;Enter</button>
+    <div class="lock-footer">© 2025 Bottom Girl · All Rights Reserved</div>
+  </div>
+</div>
+
 <div class="grain"></div>
 <canvas id="lq"></canvas>
 
@@ -1243,8 +1381,72 @@ async function loadVisitorStats(){
 }
 
 // ══════════════════════════════════════════
-// CLOUDINARY CONFIG
+// LOCK SCREEN
+// Password gates entire website
+// Session based — ask once per session
 // ══════════════════════════════════════════
+const LOCK_PW='bottomgirl2025';
+const LOCK_SESSION_KEY='bg_site_unlocked';
+
+function tryUnlock(){
+  const val=document.getElementById('lockInput').value;
+  const err=document.getElementById('lockErr');
+  if(val===LOCK_PW){
+    // Save to sessionStorage — stays unlocked until browser closes
+    sessionStorage.setItem(LOCK_SESSION_KEY,'1');
+    // Animate out
+    const lock=document.getElementById('lockScreen');
+    lock.classList.add('unlocking');
+    setTimeout(()=>{lock.classList.add('gone');},800);
+  }else{
+    err.style.display='block';
+    document.getElementById('lockInput').value='';
+    document.getElementById('lockInput').focus();
+    // Hide error after 3 seconds
+    setTimeout(()=>{err.style.display='none';},3000);
+  }
+}
+
+function toggleLockEye(){
+  const inp=document.getElementById('lockInput');
+  const btn=document.getElementById('lockEyeBtn');
+  if(inp.type==='password'){
+    inp.type='text';btn.textContent='🙈';
+  }else{
+    inp.type='password';btn.textContent='👁';
+  }
+}
+
+function initLockScreen(){
+  // If already unlocked this session — skip lock screen
+  if(sessionStorage.getItem(LOCK_SESSION_KEY)==='1'){
+    document.getElementById('lockScreen').classList.add('gone');
+    return;
+  }
+  // Create floating peaches
+  const container=document.getElementById('lockPeaches');
+  for(let i=0;i<12;i++){
+    const div=document.createElement('div');
+    div.className='lock-peach';
+    const size=30+Math.random()*50;
+    div.style.cssText=`
+      left:${Math.random()*100}%;
+      width:${size}px;height:${size}px;
+      animation-duration:${6+Math.random()*10}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    div.innerHTML=`<svg viewBox="0 0 52 52" fill="none" width="${size}" height="${size}">
+      <ellipse cx="18" cy="30" rx="14" ry="16" fill="#ff1a6c" opacity="0.7"/>
+      <ellipse cx="34" cy="30" rx="14" ry="16" fill="#ff5fa0" opacity="0.7"/>
+      <path d="M26 14 Q24.5 26 26 40" stroke="#9b0040" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+      <path d="M26 13 Q29 6 34 4" stroke="#2d8a3e" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <ellipse cx="33" cy="5.5" rx="4" ry="2" fill="#3aac52" transform="rotate(-30 33 5.5)"/>
+    </svg>`;
+    container.appendChild(div);
+  }
+  // Focus password input
+  setTimeout(()=>document.getElementById('lockInput').focus(),500);
+}
 const CLOUD_NAME='dh59xfbmr';
 const CLOUD_PRESET='bujnwovp';
 const ADMIN_PW='bottomgirl2025';
@@ -1713,6 +1915,7 @@ function checkName(){
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
+  initLockScreen();
   loadVisitorStats();
   checkName();
   loadVideos();
